@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+{% block page_title %}Courses{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Courses</h1><div class="breadcrumb">Manage all academic courses</div></div>
+  <a href="{{ url_for('add_course') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Course</a>
+</div>
+<div class="card">
+  <div class="card-header"><div><div class="card-title">All Courses</div><div class="card-subtitle">{{ courses|length }} course(s)</div></div></div>
+  {% if courses %}
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Code</th><th>Course Name</th><th>Department</th><th>Duration</th><th>Total Seats</th><th>Fees (₹)</th><th>Description</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
+          <td><span class="badge badge-info">{{ c.code }}</span></td>
+          <td style="font-weight:500">{{ c.name }}</td>
+          <td>{{ c.get('dept','—') }}</td>
+          <td>{{ c.get('duration','—') }}</td>
+          <td>{{ c.get('seats','—') }}</td>
+          <td>₹{{ c.get('fees','—') }}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-muted);font-size:12px;">{{ c.get('desc','—') }}</td>
+          <td>
+            <div class="actions-cell">
+              <a href="{{ url_for('edit_course', id=c._id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></a>
+              <a href="{{ url_for('delete_course', id=c._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><i class="fas fa-book-open"></i><p>No courses added yet.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

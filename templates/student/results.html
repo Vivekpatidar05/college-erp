@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}My Results{% endblock %}
+{% block page_title %}My Results{% endblock %}
+
+{% block content %}
+<div class="page-header"><div><h1>My Results</h1><div class="breadcrumb">Roll No: {{ student.roll_no }} — {{ student.get('course','') }}</div></div></div>
+
+{% if results %}
+<div style="display:flex;flex-direction:column;gap:16px;">
+  {% for r in results %}
+  <div class="card" style="padding:20px 24px;">
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <!-- Grade circle -->
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#9d6bff);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;">
+        {{ r.grade }}
+      </div>
+      <!-- Info -->
+      <div style="flex:1;">
+        <div style="font-size:16px;font-weight:700;margin-bottom:4px;">{{ r.get('exam_type','Exam') }} — {{ r.get('semester','') }}</div>
+        <div style="display:flex;gap:16px;font-size:13px;color:var(--text-muted);flex-wrap:wrap;">
+          <span><i class="fas fa-percent" style="margin-right:4px;"></i>{{ r.percentage }}%</span>
+          <span><i class="fas fa-calculator" style="margin-right:4px;"></i>{{ r.total }} / {{ r.total_max }}</span>
+          <span class="badge {% if r.result=='Pass' %}badge-success{% else %}badge-danger{% endif %}">{{ r.result }}</span>
+        </div>
+      </div>
+      <!-- Subject breakdown -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        {% for key, sub in r.marks.items() %}
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:8px;text-align:center;min-width:80px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px;" title="{{ sub.name }}">{{ sub.name }}</div>
+          <div style="font-size:15px;font-weight:700;">{{ sub.marks }}<span style="font-size:11px;color:var(--text-muted);">/{{ sub.max }}</span></div>
+        </div>
+        {% endfor %}
+      </div>
+      <a href="{{ url_for('view_result', id=r._id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> Detail</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card">
+  <div class="empty-state"><i class="fas fa-trophy"></i><p>No results published yet. Check back after your exams.</p></div>
+</div>
+{% endif %}
+{% endblock %}

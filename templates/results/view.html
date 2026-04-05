@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Result – {{ result.student_name }}{% endblock %}
+{% block page_title %}Result Detail{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Result Detail</h1><div class="breadcrumb"><a href="{{ url_for('results') }}" style="color:var(--primary)">Results</a> / View</div></div>
+  <a href="{{ url_for('results') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+</div>
+
+<div class="card" style="max-width:760px;">
+  <!-- Header -->
+  <div style="text-align:center;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:24px;">
+    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px;">EduCore College</div>
+    <div style="font-size:13px;color:var(--text-muted);">Official Academic Result</div>
+  </div>
+
+  <!-- Student + Grade side-by-side -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;gap:20px;">
+    <div style="flex:1;">
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px;font-size:14px;">
+        <span style="color:var(--text-muted);font-weight:500;">Student Name</span><span style="font-weight:600;">{{ result.student_name }}</span>
+        <span style="color:var(--text-muted);font-weight:500;">Roll Number</span><span><span class="badge badge-purple">{{ result.roll_no }}</span></span>
+        <span style="color:var(--text-muted);font-weight:500;">Course</span><span>{{ result.get('course','—') }}</span>
+        <span style="color:var(--text-muted);font-weight:500;">Semester</span><span>{{ result.get('semester','—') }}</span>
+        <span style="color:var(--text-muted);font-weight:500;">Exam Type</span><span>{{ result.get('exam_type','—') }}</span>
+      </div>
+    </div>
+    <div style="text-align:center;flex-shrink:0;">
+      <div class="result-grade">{{ result.grade }}</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:8px;">Grade</div>
+      <div style="margin-top:8px;">
+        <span class="badge {% if result.result=='Pass' %}badge-success{% else %}badge-danger{% endif %}" style="font-size:13px;padding:5px 14px;">
+          {{ result.result }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marks Table -->
+  <div class="table-wrapper" style="margin-bottom:24px;">
+    <table>
+      <thead><tr><th>Subject</th><th style="text-align:right">Marks Obtained</th><th style="text-align:right">Max Marks</th><th style="text-align:right">Percentage</th></tr></thead>
+      <tbody>
+        {% for key, sub in result.marks.items() %}
+        <tr>
+          <td style="font-weight:500">{{ sub.name }}</td>
+          <td style="text-align:right;font-weight:600">{{ sub.marks }}</td>
+          <td style="text-align:right;color:var(--text-muted)">{{ sub.max }}</td>
+          <td style="text-align:right">
+            {% set pct = (sub.marks | int / sub.max | int * 100) | round(1) %}
+            <span class="badge {% if pct >= 60 %}badge-success{% elif pct >= 40 %}badge-warning{% else %}badge-danger{% endif %}">{{ pct }}%</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr style="border-top:2px solid var(--border);">
+          <td style="font-weight:700">Total</td>
+          <td style="text-align:right;font-weight:700;font-size:16px;">{{ result.total }}</td>
+          <td style="text-align:right;font-weight:600;color:var(--text-muted)">{{ result.total_max }}</td>
+          <td style="text-align:right;font-weight:700;font-size:15px;color:var(--primary)">{{ result.percentage }}%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Summary Bar -->
+  <div style="background:var(--surface2);border-radius:10px;padding:16px 20px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;">
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary)">{{ result.percentage }}%</div><div style="font-size:12px;color:var(--text-muted)">Overall</div></div>
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:700;">{{ result.grade }}</div><div style="font-size:12px;color:var(--text-muted)">Grade</div></div>
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:{% if result.result=='Pass' %}var(--success){% else %}var(--danger){% endif %};">{{ result.result }}</div><div style="font-size:12px;color:var(--text-muted)">Status</div></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Add Result{% endblock %}
+{% block page_title %}Add Result{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Add Exam Result</h1><div class="breadcrumb"><a href="{{ url_for('results') }}" style="color:var(--primary)">Results</a> / Add</div></div>
+</div>
+<div class="card" style="max-width:960px;">
+  <form method="POST">
+    <!-- Student Info -->
+    <div style="margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;">Student Info</div>
+    <div class="form-grid" style="margin-bottom:24px;">
+      <div class="form-group">
+        <label>Roll Number *</label>
+        <input name="roll_no" class="roll-lookup" required placeholder="Enter roll number"/>
+      </div>
+      <div class="form-group">
+        <label>Student Name</label>
+        <input name="student_name" class="student-name-fill" placeholder="Auto-filled"/>
+      </div>
+      <div class="form-group">
+        <label>Course</label>
+        <input name="course" class="student-course-fill" placeholder="Auto-filled"/>
+      </div>
+      <div class="form-group">
+        <label>Semester</label>
+        <select name="semester">
+          {% for i in range(1,9) %}<option>Semester {{ i }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Exam Type</label>
+        <select name="exam_type">
+          <option>Mid-Term</option>
+          <option>End-Term</option>
+          <option>Supplementary</option>
+          <option>Practical</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Subject Marks -->
+    <div style="margin-bottom:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;">Subject-wise Marks</div>
+    <div style="background:var(--surface2);border-radius:10px;padding:18px;margin-bottom:24px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:10px;font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">
+        <span>Subject Name</span><span>Marks Obtained</span><span>Max Marks</span>
+      </div>
+      {% for i in range(1,6) %}
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:10px;align-items:center;">
+        <input name="s{{ i }}_name" placeholder="Subject {{ i }} name" required/>
+        <input name="s{{ i }}_marks" type="number" min="0" placeholder="Marks" required/>
+        <input name="s{{ i }}_max" type="number" min="1" value="100" required/>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text-muted);">
+      <i class="fas fa-info-circle" style="color:var(--primary)"></i>
+      Grade is calculated automatically: A+(≥90%), A(≥80%), B(≥70%), C(≥60%), D(≥50%), F(&lt;50%). Pass requires ≥40%.
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Result</button>
+      <a href="{{ url_for('results') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

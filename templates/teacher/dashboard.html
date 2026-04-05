@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard{% endblock %}
+{% block page_title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner" style="background:linear-gradient(135deg,#00b894,#00cec9);">
+  <div class="welcome-title">Hello, {{ teacher.name }} 👋</div>
+  <div class="welcome-sub">Subject: <strong>{{ teacher.get('subject','—') }}</strong> &nbsp;|&nbsp; Dept: {{ teacher.get('department','—') }}</div>
+</div>
+
+<div class="stats-grid" style="margin-bottom:28px;">
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(0,212,180,0.15);color:#00d4b4;"><i class="fas fa-calendar-day"></i></div>
+    <div><div class="stat-value">{{ marked_today }}</div><div class="stat-label">Marked Today</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon purple"><i class="fas fa-history"></i></div>
+    <div><div class="stat-value">{{ total_marked }}</div><div class="stat-label">Total Records</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fas fa-book-open"></i></div>
+    <div><div class="stat-value">{{ teacher.get('subject','—') }}</div><div class="stat-label">Your Subject</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fas fa-building"></i></div>
+    <div><div class="stat-value" style="font-size:16px;line-height:1.4;">{{ teacher.get('department','—') }}</div><div class="stat-label">Department</div></div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Recent Attendance</div><div class="card-subtitle">Last records for {{ teacher.get('subject','') }}</div></div>
+      <a href="{{ url_for('teacher_mark_attendance') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Mark Now</a>
+    </div>
+    {% if recent %}
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Student</th><th>Roll No</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for r in recent %}
+          <tr>
+            <td style="font-weight:500;">{{ r.name }}</td>
+            <td><span class="badge badge-purple">{{ r.roll_no }}</span></td>
+            <td>{{ r.date }}</td>
+            <td><span class="badge {% if r.status=='Present' %}badge-success{% elif r.status=='Absent' %}badge-danger{% else %}badge-warning{% endif %}">{{ r.status }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-calendar-check"></i><p>No attendance records yet. <a href="{{ url_for('teacher_mark_attendance') }}" style="color:var(--primary)">Mark attendance now.</a></p></div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Latest Notices</div><div class="card-subtitle">From admin</div></div>
+    </div>
+    {% if notices %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for n in notices %}
+      <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-weight:600;font-size:14px;">{{ n.title }}</span>
+          <span class="badge {% if n.priority=='High' %}badge-danger{% elif n.priority=='Medium' %}badge-warning{% else %}badge-grey{% endif %}" style="margin-left:auto;">{{ n.priority }}</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);">{{ n.date }} · {{ n.category }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-bullhorn"></i><p>No notices posted.</p></div>
+    {% endif %}
+
+    <div style="margin-top:20px;padding:16px;background:rgba(0,212,180,0.07);border:1px solid rgba(0,212,180,0.18);border-radius:10px;font-size:13px;color:var(--text-muted);">
+      <i class="fas fa-lock" style="color:#00d4b4;margin-right:6px;"></i>
+      <strong style="color:#00d4b4;">Your Access:</strong> You can only mark and view attendance for
+      <strong style="color:var(--text);">{{ teacher.get('subject','your subject') }}</strong>.
+      Contact the administrator for any other changes.
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login — EduCore ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root {
+  --bg:      #0a0c14;
+  --surface: #12141f;
+  --surface2:#1a1d2e;
+  --border:  rgba(255,255,255,0.07);
+  --text:    #e8eaf0;
+  --muted:   #8b90a8;
+  --primary: #6c63ff;
+  --primary2:#9d6bff;
+  --success: #2ecc80;
+  --danger:  #ff5c6a;
+  --warning: #f5a623;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Left panel ── */
+.left-panel {
+  flex: 1;
+  background: linear-gradient(145deg, #0e0c2e 0%, #1a0a3e 40%, #0c1a3e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 50px;
+  position: relative;
+  overflow: hidden;
+}
+.left-panel::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(108,99,255,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.left-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(157,107,255,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.panel-content { position: relative; z-index: 2; max-width: 400px; }
+.panel-logo {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 48px;
+}
+.logo-icon {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, #6c63ff, #9d6bff);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #fff;
+  box-shadow: 0 8px 32px rgba(108,99,255,0.4);
+}
+.logo-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #fff; }
+.logo-sub  { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; margin-top: 2px; }
+
+.panel-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px; font-weight: 700;
+  color: #fff; line-height: 1.2;
+  margin-bottom: 18px;
+}
+.panel-headline span { background: linear-gradient(135deg,#6c63ff,#c88fff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.panel-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 44px; }
+
+.role-pills { display: flex; flex-direction: column; gap: 12px; }
+.role-pill {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+.role-pill-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.role-pill-icon.purple { background: rgba(108,99,255,0.2); color: #a08fff; }
+.role-pill-icon.teal   { background: rgba(0,210,180,0.15); color: #00d4b4; }
+.role-pill-icon.amber  { background: rgba(245,166,35,0.15); color: #f5a623; }
+.role-pill-text { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); }
+.role-pill-sub  { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+/* ── Right panel (form) ── */
+.right-panel {
+  width: 480px;
+  flex-shrink: 0;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 44px;
+  border-left: 1px solid var(--border);
+}
+.login-box { width: 100%; }
+.login-title { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+.login-sub   { font-size: 13.5px; color: var(--muted); margin-bottom: 36px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+.input-wrap { position: relative; }
+.input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 15px; }
+.form-input {
+  width: 100%; padding: 13px 14px 13px 42px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 11px; color: var(--text);
+  font-family: inherit; font-size: 14px; outline: none;
+  transition: border-color 0.22s, box-shadow 0.22s;
+}
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+}
+.form-input::placeholder { color: var(--muted); }
+.toggle-pw {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); cursor: pointer; font-size: 15px;
+  background: none; border: none;
+}
+.toggle-pw:hover { color: var(--text); }
+
+.role-hint {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(108,99,255,0.08);
+  border: 1px solid rgba(108,99,255,0.2);
+  border-radius: 10px; padding: 12px 14px;
+  font-size: 12.5px; color: rgba(160,143,255,0.9);
+  margin-bottom: 24px;
+}
+
+.btn-login {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #6c63ff, #9d6bff);
+  color: #fff; border: none;
+  border-radius: 11px; font-family: inherit;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-login:active { transform: translateY(0); }
+
+.divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; color: var(--muted); font-size: 12px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.alert-box {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 500; margin-bottom: 20px;
+}
+.alert-box.danger  { background: rgba(255,92,106,0.1);  border: 1px solid rgba(255,92,106,0.25); color: var(--danger); }
+.alert-box.success { background: rgba(46,204,128,0.1);  border: 1px solid rgba(46,204,128,0.25); color: var(--success); }
+.alert-box.warning { background: rgba(245,166,35,0.1);  border: 1px solid rgba(245,166,35,0.25); color: var(--warning); }
+
+@media (max-width: 900px) {
+  .left-panel { display: none; }
+  .right-panel { width: 100%; border-left: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Left decorative panel -->
+<div class="left-panel">
+  <div class="panel-content">
+    <div class="panel-logo">
+      <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+      <div><div class="logo-name">EduCore</div><div class="logo-sub">College ERP System</div></div>
+    </div>
+    <div class="panel-headline">Your campus,<br/><span>managed smartly.</span></div>
+    <div class="panel-desc">A unified platform for administrators, teachers, and students — with role-based access tailored to each.</div>
+    <div class="role-pills">
+      <div class="role-pill">
+        <div class="role-pill-icon purple"><i class="fas fa-user-shield"></i></div>
+        <div>
+          <div class="role-pill-text">Administrator</div>
+          <div class="role-pill-sub">Full access — manage everything</div>
+        </div>
+      </div>
+      <div class="role-pill">
+        <div class="role-pill-icon teal"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div>
+          <div class="role-pill-text">Teacher</div>
+          <div class="role-pill-sub">Mark attendance for your subject only</div>
+        </div>
+      </div>
+      <div class="role-pill">
+        <div class="role-pill-icon amber"><i class="fas fa-user-graduate"></i></div>
+        <div>
+          <div class="role-pill-text">Student</div>
+          <div class="role-pill-sub">View your own records & attendance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Right login form -->
+<div class="right-panel">
+  <div class="login-box">
+    <div class="login-title">Sign in</div>
+    <div class="login-sub">Enter your credentials to access your dashboard.</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="alert-box {{ category }}">
+        <i class="fas {% if category=='success' %}fa-check-circle{% elif category=='warning' %}fa-exclamation-triangle{% else %}fa-exclamation-circle{% endif %}"></i>
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="input-wrap">
+          <i class="fas fa-user input-icon"></i>
+          <input class="form-input" name="username" type="text" placeholder="Enter your username" required autocomplete="username"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock input-icon"></i>
+          <input class="form-input" name="password" id="pw-field" type="password" placeholder="Enter your password" required autocomplete="current-password"/>
+          <button type="button" class="toggle-pw" onclick="togglePw()">
+            <i class="fas fa-eye" id="pw-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="role-hint">
+        <i class="fas fa-info-circle"></i>
+        Default admin: <strong style="margin-left:4px;">admin</strong> / <strong>admin123</strong>
+      </div>
+
+      <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Sign In</button>
+    </form>
+
+    <div class="divider">Role-based access control enabled</div>
+
+    <div style="display:flex;justify-content:center;gap:32px;font-size:12px;color:var(--muted);">
+      <span><i class="fas fa-shield-alt" style="margin-right:5px;color:#a08fff;"></i>Admin</span>
+      <span><i class="fas fa-chalkboard-teacher" style="margin-right:5px;color:#00d4b4;"></i>Teacher</span>
+      <span><i class="fas fa-user-graduate" style="margin-right:5px;color:#f5a623;"></i>Student</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePw() {
+  const f = document.getElementById('pw-field');
+  const e = document.getElementById('pw-eye');
+  if (f.type === 'password') {
+    f.type = 'text'; e.classList.replace('fa-eye','fa-eye-slash');
+  } else {
+    f.type = 'password'; e.classList.replace('fa-eye-slash','fa-eye');
+  }
+}
+</script>
+</body>
+</html>

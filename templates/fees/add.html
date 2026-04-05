@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Add Fee Record{% endblock %}
+{% block page_title %}Add Fee Record{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Add Fee Record</h1><div class="breadcrumb"><a href="{{ url_for('fees') }}" style="color:var(--primary)">Fees</a> / Add</div></div>
+</div>
+<div class="card" style="max-width:900px;">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Roll Number *</label>
+        <input name="roll_no" class="roll-lookup" required placeholder="Enter roll number"/>
+      </div>
+      <div class="form-group">
+        <label>Student Name</label>
+        <input name="student_name" class="student-name-fill" placeholder="Auto-filled from roll no"/>
+      </div>
+      <div class="form-group">
+        <label>Course</label>
+        <input name="course" class="student-course-fill" placeholder="Auto-filled from roll no"/>
+      </div>
+      <div class="form-group">
+        <label>Fee Type</label>
+        <select name="fee_type">
+          <option>Tuition Fee</option>
+          <option>Examination Fee</option>
+          <option>Library Fee</option>
+          <option>Lab Fee</option>
+          <option>Hostel Fee</option>
+          <option>Transport Fee</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Amount (₹) *</label>
+        <input name="amount" type="number" min="0" required placeholder="Enter amount"/>
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input name="due_date" type="date"/>
+      </div>
+      <div class="form-group">
+        <label>Paid Date</label>
+        <input name="paid_date" type="date"/>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status">
+          <option>Pending</option>
+          <option>Paid</option>
+          <option>Overdue</option>
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label>Remarks</label>
+        <textarea name="remarks" placeholder="Any additional notes…"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Fee Record</button>
+      <a href="{{ url_for('fees') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

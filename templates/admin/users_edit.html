@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Edit User{% endblock %}
+{% block page_title %}Edit User{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Edit User</h1><div class="breadcrumb"><a href="{{ url_for('admin_users') }}" style="color:var(--primary)">Users</a> / Edit</div></div>
+</div>
+
+<div class="card" style="max-width:760px;">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Username (read-only)</label>
+        <input value="{{ user.username }}" disabled style="opacity:0.5;cursor:not-allowed;"/>
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <input name="password" type="password" placeholder="Leave blank to keep current password"/>
+      </div>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input name="name" value="{{ user.name }}" required/>
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select name="role">
+          {% for r in ['admin','teacher','student'] %}
+          <option {% if user.role==r %}selected{% endif %}>{{ r }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Link to Teacher</label>
+        <select name="linked_id">
+          <option value="">-- None --</option>
+          {% for t in teachers %}
+          <option value="{{ t._id }}" {% if user.linked_id and user.linked_id|string == t._id|string %}selected{% endif %}>
+            {{ t.name }} ({{ t.emp_id }}) — {{ t.get('subject','') }}
+          </option>
+          {% endfor %}
+          {% for s in students %}
+          <option value="{{ s._id }}" {% if user.linked_id and user.linked_id|string == s._id|string %}selected{% endif %}>
+            {{ s.name }} ({{ s.roll_no }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group" style="justify-content:flex-end;">
+        <label>Account Status</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:8px;">
+          <input type="checkbox" name="active" {% if user.get('active',True) %}checked{% endif %}
+                 style="width:18px;height:18px;accent-color:var(--primary);cursor:pointer;"/>
+          <span style="font-size:14px;font-weight:500;">Active (can log in)</span>
+        </label>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update User</button>
+      <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

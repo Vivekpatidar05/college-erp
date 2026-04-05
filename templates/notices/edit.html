@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Edit Notice{% endblock %}
+{% block page_title %}Edit Notice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Edit Notice</h1><div class="breadcrumb"><a href="{{ url_for('notices') }}" style="color:var(--primary)">Notices</a> / Edit</div></div>
+</div>
+<div class="card" style="max-width:760px;">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label>Notice Title</label>
+        <input name="title" value="{{ notice.title }}" required/>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category">
+          {% for cat in ['General','Academic','Exam','Event','Holiday','Fee','Admission','Urgent'] %}
+          <option {% if notice.get('category')==cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select name="priority">
+          {% for p in ['Low','Medium','High'] %}
+          <option {% if notice.get('priority')==p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Posted By</label>
+        <input name="author" value="{{ notice.get('author','Admin') }}"/>
+      </div>
+      <div class="form-group full-width">
+        <label>Notice Content</label>
+        <textarea name="content" style="min-height:140px;" required>{{ notice.content }}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Notice</button>
+      <a href="{{ url_for('notices') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

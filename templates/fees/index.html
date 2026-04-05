@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Fees{% endblock %}
+{% block page_title %}Fees Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Fees Management</h1><div class="breadcrumb">Track & manage student fees</div></div>
+  <a href="{{ url_for('add_fee') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Fee Record</a>
+</div>
+
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+  <form method="GET" style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" name="q" value="{{ q }}" placeholder="Search student…"/></div>
+    <select name="status" class="search-input" style="max-width:160px;padding:10px 14px;">
+      <option value="">All Status</option>
+      <option {% if status_filter=='Paid' %}selected{% endif %}>Paid</option>
+      <option {% if status_filter=='Pending' %}selected{% endif %}>Pending</option>
+      <option {% if status_filter=='Overdue' %}selected{% endif %}>Overdue</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="{{ url_for('fees') }}" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header"><div><div class="card-title">Fee Records</div><div class="card-subtitle">{{ fees|length }} record(s)</div></div></div>
+  {% if fees %}
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Roll No</th><th>Student</th><th>Course</th><th>Fee Type</th><th>Amount</th><th>Due Date</th><th>Paid Date</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for f in fees %}
+        <tr>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
+          <td><span class="badge badge-purple">{{ f.roll_no }}</span></td>
+          <td style="font-weight:500">{{ f.student_name }}</td>
+          <td>{{ f.get('course','—') }}</td>
+          <td>{{ f.get('fee_type','—') }}</td>
+          <td style="font-weight:600">₹{{ f.get('amount','0') }}</td>
+          <td>{{ f.get('due_date','—') }}</td>
+          <td>{{ f.get('paid_date','—') or '—' }}</td>
+          <td><span class="badge {% if f.status=='Paid' %}badge-success{% elif f.status=='Overdue' %}badge-danger{% else %}badge-warning{% endif %}">{{ f.status }}</span></td>
+          <td>
+            <div class="actions-cell">
+              <a href="{{ url_for('edit_fee', id=f._id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></a>
+              <a href="{{ url_for('delete_fee', id=f._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>No fee records found.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

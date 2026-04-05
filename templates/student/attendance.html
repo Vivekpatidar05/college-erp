@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}My Attendance{% endblock %}
+{% block page_title %}My Attendance{% endblock %}
+
+{% block content %}
+<div class="page-header"><div><h1>My Attendance</h1><div class="breadcrumb">Roll No: {{ student.roll_no }}</div></div></div>
+
+<!-- Summary stats -->
+<div class="stats-grid" style="margin-bottom:24px;">
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fas fa-percentage"></i></div>
+    <div><div class="stat-value" style="color:{% if pct>=75 %}var(--success){% elif pct>=50 %}var(--accent){% else %}var(--danger){% endif %}">{{ pct }}%</div><div class="stat-label">Overall</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon purple"><i class="fas fa-calendar-check"></i></div>
+    <div><div class="stat-value">{{ total }}</div><div class="stat-label">Total Classes</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+    <div><div class="stat-value">{{ present }}</div><div class="stat-label">Present</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
+    <div><div class="stat-value">{{ absent }}</div><div class="stat-label">Absent</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+    <div><div class="stat-value">{{ late }}</div><div class="stat-label">Late</div></div>
+  </div>
+</div>
+
+<!-- Attendance alert -->
+{% if pct < 75 and total > 0 %}
+<div class="alert alert-danger" style="margin-bottom:20px;">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>Low Attendance Warning!</strong> Your attendance is {{ pct }}%, which is below the required 75%. Please attend more classes.
+</div>
+{% elif pct >= 75 %}
+<div class="alert alert-success" style="margin-bottom:20px;">
+  <i class="fas fa-check-circle"></i>
+  Your attendance is good at {{ pct }}%. Keep it up!
+</div>
+{% endif %}
+
+<!-- Subject filter -->
+<div class="search-bar" style="margin-bottom:20px;">
+  <form method="GET" style="display:flex;gap:10px;flex-wrap:wrap;">
+    <select name="subject" class="search-input" style="max-width:220px;padding:10px 14px;">
+      <option value="">All Subjects</option>
+      {% for sub in subjects %}
+      <option {% if subject_filter==sub %}selected{% endif %}>{{ sub }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    {% if subject_filter %}<a href="{{ url_for('student_attendance') }}" class="btn btn-secondary">Clear</a>{% endif %}
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div><div class="card-title">Attendance Records</div><div class="card-subtitle">{{ records|length }} record(s){% if subject_filter %} for {{ subject_filter }}{% endif %}</div></div>
+  </div>
+  {% if records %}
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Subject</th><th>Course</th><th>Date</th><th>Marked By</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
+          <td style="font-weight:500">{{ r.get('subject','General') }}</td>
+          <td>{{ r.get('course','—') }}</td>
+          <td>{{ r.date }}</td>
+          <td style="color:var(--text-muted);font-size:12px;">{{ r.get('marked_by','—') }}</td>
+          <td><span class="badge {% if r.status=='Present' %}badge-success{% elif r.status=='Absent' %}badge-danger{% else %}badge-warning{% endif %}">{{ r.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><i class="fas fa-calendar-check"></i><p>No attendance records found.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

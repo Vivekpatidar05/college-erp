@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+  <div class="welcome-title">Welcome back, Administrator 👋</div>
+  <div class="welcome-sub">Here's what's happening in your college today.</div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon purple"><i class="fas fa-user-graduate"></i></div>
+    <div><div class="stat-value">{{ stats.students }}</div><div class="stat-label">Total Students</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fas fa-chalkboard-teacher"></i></div>
+    <div><div class="stat-value">{{ stats.teachers }}</div><div class="stat-label">Teachers</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fas fa-book-open"></i></div>
+    <div><div class="stat-value">{{ stats.courses }}</div><div class="stat-label">Courses</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="fas fa-file-invoice-dollar"></i></div>
+    <div><div class="stat-value">{{ stats.fees_pending }}</div><div class="stat-label">Fees Pending</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="fas fa-book"></i></div>
+    <div><div class="stat-value">{{ stats.library }}</div><div class="stat-label">Library Books</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon teal"><i class="fas fa-bullhorn"></i></div>
+    <div><div class="stat-value">{{ stats.notices }}</div><div class="stat-label">Notices</div></div>
+  </div>
+</div>
+
+<div style="margin-bottom:18px">
+  <div class="card-title" style="margin-bottom:12px;font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">Quick Actions</div>
+  <div class="quick-actions">
+    <a href="{{ url_for('add_student') }}" class="quick-action"><i class="fas fa-user-plus"></i><span>Add Student</span></a>
+    <a href="{{ url_for('add_teacher') }}" class="quick-action"><i class="fas fa-user-tie"></i><span>Add Teacher</span></a>
+    <a href="{{ url_for('add_attendance') }}" class="quick-action"><i class="fas fa-calendar-plus"></i><span>Mark Attendance</span></a>
+    <a href="{{ url_for('add_notice') }}" class="quick-action"><i class="fas fa-bell"></i><span>Post Notice</span></a>
+    <a href="{{ url_for('add_fee') }}" class="quick-action"><i class="fas fa-money-bill-wave"></i><span>Record Fee</span></a>
+    <a href="{{ url_for('add_result') }}" class="quick-action"><i class="fas fa-star"></i><span>Add Result</span></a>
+    <a href="{{ url_for('add_course') }}" class="quick-action"><i class="fas fa-plus-circle"></i><span>Add Course</span></a>
+    <a href="{{ url_for('add_book') }}" class="quick-action"><i class="fas fa-book-medical"></i><span>Add Book</span></a>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Recent Students</div>
+        <div class="card-subtitle">Latest enrollments</div>
+      </div>
+      <a href="{{ url_for('students') }}" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    {% if recent_students %}
+    <table>
+      <thead><tr><th>Name</th><th>Roll No</th><th>Course</th></tr></thead>
+      <tbody>
+        {% for s in recent_students %}
+        <tr>
+          <td>{{ s.name }}</td>
+          <td><span class="badge badge-purple">{{ s.roll_no }}</span></td>
+          <td>{{ s.get('course','—') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students enrolled yet.</p></div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Recent Notices</div>
+        <div class="card-subtitle">Latest announcements</div>
+      </div>
+      <a href="{{ url_for('notices') }}" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    {% if recent_notices %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for n in recent_notices %}
+      <div style="padding:14px;background:var(--surface2);border-radius:10px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="flex-shrink:0;width:36px;height:36px;background:rgba(108,99,255,0.15);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--primary);">
+          <i class="fas fa-bullhorn" style="font-size:14px;"></i>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:600;">{{ n.title }}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">{{ n.date }} · {{ n.category }}</div>
+        </div>
+        <span class="badge {% if n.priority=='High' %}badge-danger{% elif n.priority=='Medium' %}badge-warning{% else %}badge-grey{% endif %}" style="margin-left:auto;flex-shrink:0;">{{ n.priority }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-bullhorn"></i><p>No notices posted yet.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block page_title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner" style="background:linear-gradient(135deg,#e17055,#f5a623);">
+  <div class="welcome-title">Hello, {{ student.name }} 👋</div>
+  <div class="welcome-sub">Roll No: <strong>{{ student.roll_no }}</strong> &nbsp;|&nbsp; {{ student.get('course','') }} — {{ student.get('year','') }}</div>
+</div>
+
+<!-- Stat cards -->
+<div class="stats-grid" style="margin-bottom:28px;">
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fas fa-calendar-check"></i></div>
+    <div><div class="stat-value">{{ pct }}%</div><div class="stat-label">Attendance</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon purple"><i class="fas fa-check-circle"></i></div>
+    <div><div class="stat-value">{{ present }}</div><div class="stat-label">Days Present</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
+    <div><div class="stat-value">{{ total - present }}</div><div class="stat-label">Days Absent</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fas fa-file-invoice-dollar"></i></div>
+    <div><div class="stat-value">{{ fees_pending }}</div><div class="stat-label">Fees Pending</div></div>
+  </div>
+</div>
+
+<!-- Attendance by subject -->
+{% if by_subject %}
+<div class="card" style="margin-bottom:22px;">
+  <div class="card-header"><div><div class="card-title">Attendance by Subject</div><div class="card-subtitle">Your performance per subject</div></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+    {% for sub, data in by_subject.items() %}
+    {% set spct = ((data.present / data.total) * 100) | round(1) if data.total else 0 %}
+    <div style="padding:16px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);">
+      <div style="font-weight:600;font-size:14px;margin-bottom:10px;">{{ sub or 'General' }}</div>
+      <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-bottom:8px;">
+        <div style="height:100%;width:{{ spct }}%;background:{% if spct>=75 %}var(--success){% elif spct>=50 %}var(--accent){% else %}var(--danger){% endif %};border-radius:3px;transition:width 0.5s;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+        <span>{{ data.present }}/{{ data.total }} days</span>
+        <span style="font-weight:600;color:{% if spct>=75 %}var(--success){% elif spct>=50 %}var(--accent){% else %}var(--danger){% endif %};">{{ spct }}%</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="dashboard-grid">
+  <!-- Recent Results -->
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">My Results</div><div class="card-subtitle">Latest exam records</div></div>
+      <a href="{{ url_for('student_results') }}" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    {% if results %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for r in results %}
+      {% set g_color = 'var(--success)' if r.grade in ['A+','A'] else 'var(--accent)' if r.grade=='B' else 'var(--danger)' %}
+      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface2);border-radius:10px;">
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#9d6bff);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;">{{ r.grade }}</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:14px;">{{ r.get('exam_type','Exam') }} — {{ r.get('semester','') }}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">{{ r.get('percentage','0') }}% &nbsp;·&nbsp;
+            <span style="color:{% if r.result=='Pass' %}var(--success){% else %}var(--danger){% endif %};">{{ r.result }}</span>
+          </div>
+        </div>
+        <a href="{{ url_for('view_result', id=r._id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-trophy"></i><p>No results published yet.</p></div>
+    {% endif %}
+  </div>
+
+  <!-- Recent Notices -->
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Recent Notices</div><div class="card-subtitle">Latest announcements</div></div>
+      <a href="{{ url_for('student_notices') }}" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    {% if recent_notices %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for n in recent_notices %}
+      <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-weight:600;font-size:13.5px;">{{ n.title }}</span>
+          <span class="badge {% if n.priority=='High' %}badge-danger{% elif n.priority=='Medium' %}badge-warning{% else %}badge-grey{% endif %}" style="margin-left:auto;">{{ n.priority }}</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);">{{ n.date }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-bullhorn"></i><p>No notices.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

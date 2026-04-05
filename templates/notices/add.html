@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Post Notice{% endblock %}
+{% block page_title %}Post Notice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Post Notice</h1><div class="breadcrumb"><a href="{{ url_for('notices') }}" style="color:var(--primary)">Notices</a> / Add</div></div>
+</div>
+<div class="card" style="max-width:760px;">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label>Notice Title *</label>
+        <input name="title" required placeholder="Enter a clear, concise title…"/>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category">
+          <option>General</option>
+          <option>Academic</option>
+          <option>Exam</option>
+          <option>Event</option>
+          <option>Holiday</option>
+          <option>Fee</option>
+          <option>Admission</option>
+          <option>Urgent</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select name="priority">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Posted By</label>
+        <input name="author" placeholder="e.g. Principal, HOD, Admin" value="Admin"/>
+      </div>
+      <div class="form-group full-width">
+        <label>Notice Content *</label>
+        <textarea name="content" required style="min-height:140px;" placeholder="Write the full notice content here…"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post Notice</button>
+      <a href="{{ url_for('notices') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

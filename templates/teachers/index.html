@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Teachers{% endblock %}
+{% block page_title %}Teachers{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Teachers</h1><div class="breadcrumb">Manage faculty records</div></div>
+  <a href="{{ url_for('add_teacher') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Teacher</a>
+</div>
+<div class="search-bar">
+  <form method="GET" style="display:flex;gap:10px;width:100%;">
+    <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" name="q" value="{{ q }}" placeholder="Search by name or subject…"/></div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    {% if q %}<a href="{{ url_for('teachers') }}" class="btn btn-secondary">Clear</a>{% endif %}
+  </form>
+</div>
+<div class="card">
+  <div class="card-header"><div><div class="card-title">All Teachers</div><div class="card-subtitle">{{ teachers|length }} record(s)</div></div></div>
+  {% if teachers %}
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Emp ID</th><th>Name</th><th>Subject</th><th>Department</th><th>Qualification</th><th>Experience</th><th>Phone</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for t in teachers %}
+        <tr>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
+          <td><span class="badge badge-orange" style="background:rgba(245,166,35,0.15);color:var(--accent)">{{ t.emp_id }}</span></td>
+          <td style="font-weight:500">{{ t.name }}</td>
+          <td>{{ t.get('subject','—') }}</td>
+          <td>{{ t.get('department','—') }}</td>
+          <td>{{ t.get('qualification','—') }}</td>
+          <td>{{ t.get('experience','—') }} yrs</td>
+          <td>{{ t.get('phone','—') }}</td>
+          <td>
+            <div class="actions-cell">
+              <a href="{{ url_for('edit_teacher', id=t._id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></a>
+              <a href="{{ url_for('delete_teacher', id=t._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><i class="fas fa-chalkboard-teacher"></i><p>No teachers added yet. <a href="{{ url_for('add_teacher') }}" style="color:var(--primary)">Add first teacher.</a></p></div>
+  {% endif %}
+</div>
+{% endblock %}

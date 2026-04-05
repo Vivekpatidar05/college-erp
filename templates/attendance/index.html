@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Attendance{% endblock %}
+{% block page_title %}Attendance{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1>Attendance</h1><div class="breadcrumb">Track student attendance</div></div>
+  <a href="{{ url_for('add_attendance') }}" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Mark Attendance</a>
+</div>
+
+<div class="search-bar">
+  <form method="GET" style="display:flex;gap:10px;width:100%;">
+    <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" name="q" value="{{ q }}" placeholder="Search by roll number…"/></div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    {% if q %}<a href="{{ url_for('attendance') }}" class="btn btn-secondary">Clear</a>{% endif %}
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header"><div><div class="card-title">Attendance Records</div><div class="card-subtitle">{{ records|length }} record(s)</div></div></div>
+  {% if records %}
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Roll No</th><th>Student Name</th><th>Course</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
+          <td><span class="badge badge-purple">{{ r.roll_no }}</span></td>
+          <td style="font-weight:500">{{ r.name }}</td>
+          <td>{{ r.get('course','—') }}</td>
+          <td>{{ r.date }}</td>
+          <td><span class="badge {% if r.status=='Present' %}badge-success{% elif r.status=='Absent' %}badge-danger{% else %}badge-warning{% endif %}">{{ r.status }}</span></td>
+          <td><a href="{{ url_for('delete_attendance', id=r._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><i class="fas fa-calendar-check"></i><p>No attendance records found.</p></div>
+  {% endif %}
+</div>
+{% endblock %}
