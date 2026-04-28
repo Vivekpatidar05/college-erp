@@ -1,4 +1,4 @@
-# EduCore — College ERP System
+# DSVV — College ERP System
 
 Flask · MongoDB Atlas · Role-Based Auth · Railway-Ready
 
