@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Submissions{% endblock %}{% block page_title %}Assignment Submissions{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>{{ asgn.title }}</h1><div class="breadcrumb"><a href="{{ url_for('assignments') }}">Assignments</a> / Submissions</div></div></div>
+<div class="card" style="margin-bottom:20px;">
+<div style="display:flex;gap:20px;flex-wrap:wrap;">
+<div><span style="color:var(--text-muted);font-size:12px;">Subject</span><div style="font-weight:700;">{{ asgn.subject }}</div></div>
+<div><span style="color:var(--text-muted);font-size:12px;">Due Date</span><div style="font-weight:700;color:var(--warning);">{{ asgn.due_date }}</div></div>
+<div><span style="color:var(--text-muted);font-size:12px;">Max Marks</span><div style="font-weight:700;">{{ asgn.get('max_marks','100') }}</div></div>
+<div><span style="color:var(--text-muted);font-size:12px;">Total Submissions</span><div style="font-weight:700;color:var(--success);">{{ subs|length }}</div></div>
+</div>
+</div>
+{% if subs %}
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>#</th><th>Roll No</th><th>Student</th><th>Submitted On</th><th>Status</th><th>Answer (preview)</th></tr></thead><tbody>
+{% for s in subs %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td><span class="badge badge-purple mono">{{ s.roll_no }}</span></td>
+<td style="font-weight:600;">{{ s.student_name }}</td>
+<td>{{ s.submitted_on }}</td>
+<td><span class="badge badge-success">{{ s.status }}</span></td>
+<td style="font-size:12px;color:var(--text-muted);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ s.get('answer','—') }}</td>
+</tr>{% endfor %}</tbody></table></div></div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-inbox"></i><p>No submissions yet.</p></div></div>{% endif %}
+{% endblock %}

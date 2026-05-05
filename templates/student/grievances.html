@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Grievances{% endblock %}{% block page_title %}Grievances{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Grievances</h1><div class="breadcrumb">Submit complaints or feedback to the administration</div></div></div>
+<div class="card" style="max-width:780px;margin-bottom:24px;">
+<div class="card-title" style="margin-bottom:16px;">Submit New Grievance</div>
+<form method="POST"><div class="form-grid">
+<div class="form-group"><label>Category *</label><select name="category" required><option>Academic</option><option>Examination</option><option>Fee</option><option>Hostel</option><option>Library</option><option>Ragging</option><option>Teacher Behaviour</option><option>Other</option></select></div>
+<div class="form-group"><label>Subject / Title *</label><input name="subject" required placeholder="Brief subject of your grievance"/></div>
+<div class="form-group full"><label>Description *</label><textarea name="description" required style="min-height:120px;" placeholder="Describe your issue in detail…"></textarea></div>
+</div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Grievance</button></div>
+</form></div>
+<div class="card-title" style="margin-bottom:14px;">My Grievances</div>
+{% if grievances %}
+<div style="display:grid;gap:12px;">{% for g in grievances %}
+<div class="grievance-card">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+<div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;"><span style="font-size:15px;font-weight:700;">{{ g.subject }}</span><span class="badge {% if g.status=='Open' %}badge-danger{% elif g.status=='In Progress' %}badge-warning{% else %}badge-success{% endif %}">{{ g.status }}</span><span class="badge badge-purple">{{ g.category }}</span></div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:6px;">{{ g.description }}</div>
+<div style="font-size:11.5px;color:var(--text-dim);">Submitted {{ g.submitted_on }}{% if g.resolved_on %} · Resolved {{ g.resolved_on }}{% endif %}</div>
+{% if g.get('response') %}<div style="margin-top:10px;padding:10px 14px;background:rgba(16,217,138,.06);border:1px solid rgba(16,217,138,.18);border-radius:8px;font-size:13px;color:var(--success);"><i class="fas fa-reply" style="margin-right:6px;"></i><strong>Admin Response:</strong> {{ g.response }}</div>{% endif %}
+</div></div></div>{% endfor %}</div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-comment-exclamation"></i><p>No grievances submitted yet.</p></div></div>{% endif %}
+{% endblock %}

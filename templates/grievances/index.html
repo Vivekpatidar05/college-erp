@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Grievances{% endblock %}{% block page_title %}Grievances{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Grievances</h1><div class="breadcrumb">Student complaints &amp; feedback</div></div>
+<div style="display:flex;gap:8px;"><a href="{{ url_for('grievances') }}" class="btn {% if not status_filter %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">All</a><a href="{{ url_for('grievances',status='Open') }}" class="btn {% if status_filter=='Open' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Open</a><a href="{{ url_for('grievances',status='Resolved') }}" class="btn {% if status_filter=='Resolved' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Resolved</a></div>
+</div>
+{% if grievances %}
+<div style="display:grid;gap:12px;">{% for g in grievances %}
+<div class="grievance-card">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+<div style="flex:1;">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+<span style="font-size:15px;font-weight:700;">{{ g.subject }}</span>
+<span class="badge {% if g.status=='Open' %}badge-danger{% elif g.status=='In Progress' %}badge-warning{% else %}badge-success{% endif %}">{{ g.status }}</span>
+<span class="badge badge-purple">{{ g.category }}</span>
+</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">{{ g.description }}</div>
+<div style="font-size:12px;color:var(--text-dim);"><i class="fas fa-user" style="margin-right:4px;"></i>{{ g.student_name }} ({{ g.roll_no }}) · {{ g.get('course','') }} · Submitted {{ g.submitted_on }}</div>
+{% if g.get('response') %}<div style="margin-top:10px;padding:10px 14px;background:rgba(16,217,138,.06);border:1px solid rgba(16,217,138,.18);border-radius:8px;font-size:13px;color:var(--success);"><i class="fas fa-reply" style="margin-right:6px;"></i>{{ g.response }}</div>{% endif %}
+</div>
+<div style="display:flex;gap:6px;flex-shrink:0;">
+<a href="{{ url_for('respond_grievance',id=g._id) }}" class="btn btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</a>
+<a href="{{ url_for('delete_grievance',id=g._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+</div>
+</div></div>
+{% endfor %}</div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-check-circle"></i><p>No grievances{% if status_filter %} with status "{{ status_filter }}"{% endif %}.</p></div></div>{% endif %}
+{% endblock %}

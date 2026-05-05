@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Add Event{% endblock %}{% block page_title %}Add Event{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Add Event</h1><div class="breadcrumb"><a href="{{ url_for('events') }}">Events</a> / Add</div></div></div>
+<div class="card" style="max-width:860px;"><form method="POST"><div class="form-grid">
+<div class="form-group full"><label>Event Title *</label><input name="title" required/></div>
+<div class="form-group"><label>Category</label><select name="category"><option>Academic</option><option>Cultural</option><option>Sports</option><option>Workshop</option><option>Seminar</option><option>Holiday</option><option>Other</option></select></div>
+<div class="form-group"><label>Date *</label><input name="date" type="date" required/></div>
+<div class="form-group"><label>Time</label><input name="time" type="time"/></div>
+<div class="form-group"><label>Venue</label><input name="venue" placeholder="Auditorium, Ground…"/></div>
+<div class="form-group"><label>Organizer</label><input name="organizer" placeholder="Dept / Club name"/></div>
+<div class="form-group"><label>Target Audience</label><select name="target"><option>All</option><option>Students</option><option>Teachers</option><option>Admin</option></select></div>
+<div class="form-group full"><label>Description</label><textarea name="description"></textarea></div>
+</div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Add Event</button><a href="{{ url_for('events') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}

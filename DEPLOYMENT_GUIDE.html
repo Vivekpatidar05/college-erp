@@ -1,412 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>EduCore ERP – Deployment Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DSVV ERP — Deployment Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#0a0c14;--surface:#13151f;--surface2:#1a1d2e;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#8b90a8;--primary:#6c63ff;--success:#2ecc80;--danger:#ff5c6a;--warning:#f5a623;--info:#4db8ff;--teal:#00d4b4;}
+:root{--bg:#080a12;--s:#111320;--s2:#1d2035;--border:rgba(255,255,255,0.07);--text:#e2e5f0;--muted:#7b80a0;--primary:#7c6bff;--success:#10d98a;--danger:#f24f63;--warning:#f59e0b;--info:#38bdf8;--teal:#14b8a6;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;}
-a{color:var(--primary);text-decoration:none;}a:hover{text-decoration:underline;}
-
-/* layout */
-.hero{background:linear-gradient(135deg,#0e0c2e 0%,#1a0a3e 50%,#0c1a3e 100%);padding:64px 40px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(108,99,255,.22) 0%,transparent 70%);border-radius:50%;}
-.hero::after {content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,180,.14) 0%,transparent 70%);border-radius:50%;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+a{color:var(--primary);}
+.hero{background:linear-gradient(135deg,#0a0818 0%,#160d3a 50%,#0d1a3a 100%);padding:64px 40px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(124,107,255,.2) 0%,transparent 70%);border-radius:50%;}
 .hero-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;}
-.logo{display:inline-flex;align-items:center;gap:14px;margin-bottom:28px;}
-.logo-icon{width:52px;height:52px;background:linear-gradient(135deg,#6c63ff,#9d6bff);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;}
-.logo-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;}
-h1{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;margin-bottom:14px;background:linear-gradient(135deg,#fff,#b4b0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-sub{font-size:16px;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto;}
-
-.container{max-width:860px;margin:0 auto;padding:48px 24px;}
-
-/* cards */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px;}
-h2{font-size:20px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
-h2 .num{width:32px;height:32px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
-h3{font-size:15px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:20px 0 10px;}
-p{font-size:14.5px;color:var(--text);margin-bottom:10px;}
-ul,ol{padding-left:20px;font-size:14.5px;}
-li{margin-bottom:7px;}
-
-/* code blocks */
-pre{background:#0d0f1a;border:1px solid var(--border);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:14px 0;}
-code{font-family:'DM Mono',monospace;font-size:13px;color:#a8c4ff;}
+.logo-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:28px;}
+.logo-box{width:52px;height:52px;background:linear-gradient(135deg,#7c6bff,#a78bfa);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 32px rgba(124,107,255,.4);}
+.logo-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:800;color:#fff;}
+h1{font-family:'Playfair Display',serif;font-size:42px;font-weight:800;margin-bottom:14px;background:linear-gradient(135deg,#fff,#b4b0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.55);}
+.container{max-width:880px;margin:0 auto;padding:48px 24px;}
+.card{background:var(--s);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:22px;}
+h2{font-size:20px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.num{width:32px;height:32px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;color:#fff;}
+h3{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin:20px 0 10px;}
+p{font-size:14px;color:var(--text);margin-bottom:10px;}
+ul,ol{padding-left:20px;font-size:14px;}li{margin-bottom:6px;}
+pre{background:#0a0c18;border:1px solid var(--border);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:12px 0;}
+code{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#a8c4ff;}
+:not(pre)>code{background:rgba(124,107,255,.12);color:#c4baff;padding:2px 7px;border-radius:5px;font-size:12.5px;}
 .cmd{color:var(--teal);}
-.comment{color:var(--muted);}
-.val{color:#f5a623;}
-
-/* inline code */
-:not(pre)>code{background:rgba(108,99,255,.12);color:#c4baff;padding:2px 7px;border-radius:5px;font-size:13px;}
-
-/* badges */
-.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-.badge-purple{background:rgba(108,99,255,.15);color:#a08fff;}
-.badge-teal  {background:rgba(0,212,180,.12);color:var(--teal);}
-.badge-orange{background:rgba(245,166,35,.12);color:var(--warning);}
-.badge-green {background:rgba(46,204,128,.12);color:var(--success);}
-.badge-red   {background:rgba(255,92,106,.12);color:var(--danger);}
-
-/* step cards */
-.step-grid{display:grid;gap:14px;}
-.step{display:flex;gap:14px;padding:14px 16px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
-.step-num{width:28px;height:28px;border-radius:50%;background:rgba(108,99,255,.2);color:var(--primary);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.step-content{flex:1;}
-.step-title{font-weight:600;font-size:14px;margin-bottom:4px;}
-.step-desc{font-size:13px;color:var(--muted);line-height:1.6;}
-
-/* env table */
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
-thead th{padding:10px 14px;background:var(--surface2);color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;text-align:left;}
-tbody td{padding:11px 14px;border-bottom:1px solid var(--border);}
+.cmt{color:var(--muted);}
+.val{color:var(--warning);}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.bp{background:rgba(124,107,255,.14);color:#a78bfa;}
+.bt{background:rgba(20,184,166,.12);color:var(--teal);}
+.bg{background:rgba(16,217,138,.12);color:var(--success);}
+.br{background:rgba(242,79,99,.12);color:var(--danger);}
+.bo{background:rgba(245,158,11,.12);color:var(--warning);}
+.step{display:flex;gap:14px;padding:14px 16px;background:var(--s2);border-radius:10px;border:1px solid var(--border);margin-bottom:10px;}
+.sn{width:26px;height:26px;border-radius:50%;background:rgba(124,107,255,.2);color:var(--primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.st{font-weight:700;font-size:13.5px;margin-bottom:3px;}
+.sd{font-size:13px;color:var(--muted);line-height:1.6;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+thead th{padding:9px 14px;background:var(--s2);color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;text-align:left;}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);}
 tbody tr:last-child td{border-bottom:none;}
-.required{color:var(--danger);font-weight:700;}
-.optional{color:var(--muted);}
-
-/* callout */
-.callout{display:flex;gap:12px;padding:14px 18px;border-radius:10px;font-size:13.5px;margin:14px 0;}
-.callout.info   {background:rgba(77,184,255,.08); border:1px solid rgba(77,184,255,.2); color:var(--info);}
-.callout.success{background:rgba(46,204,128,.08);border:1px solid rgba(46,204,128,.2);color:var(--success);}
-.callout.warning{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);color:var(--warning);}
-.callout.danger {background:rgba(255,92,106,.08);border:1px solid rgba(255,92,106,.2);color:var(--danger);}
-.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
-
-/* TOC */
+.callout{display:flex;gap:10px;padding:12px 16px;border-radius:9px;font-size:13px;margin:12px 0;}
+.ci{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:var(--info);}
+.cw{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--warning);}
+.cs{background:rgba(16,217,138,.08);border:1px solid rgba(16,217,138,.2);color:var(--success);}
+.cd{background:rgba(242,79,99,.08);border:1px solid rgba(242,79,99,.2);color:var(--danger);}
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+.arch-box{padding:18px;background:var(--s2);border-radius:10px;text-align:center;}
+.arch-icon{font-size:28px;margin-bottom:8px;}
+.arch-title{font-weight:700;margin-bottom:4px;}
+.arch-sub{font-size:12px;color:var(--muted);}
 .toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
-.toc a{padding:6px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12.5px;color:var(--muted);transition:all .2s;}
-.toc a:hover{border-color:var(--primary);color:var(--primary);text-decoration:none;}
+.toc a{padding:5px 13px;background:var(--s);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--muted);text-decoration:none;transition:all .2s;}
+.toc a:hover{border-color:var(--primary);color:var(--primary);}
 </style>
 </head>
 <body>
-
 <div class="hero">
   <div class="hero-inner">
-    <div class="logo">
-      <div class="logo-icon">🎓</div>
-      <div class="logo-name">EduCore ERP</div>
-    </div>
+    <div class="logo-row"><div class="logo-box">🎓</div><div><div class="logo-name">DSVV ERP</div></div></div>
     <h1>Deployment Guide</h1>
-    <p class="hero-sub">Step-by-step instructions to connect MongoDB Atlas and deploy on Railway — from zero to live URL.</p>
+    <p class="hero-sub">MongoDB Atlas + Render — Full step-by-step for Dev Sanskriti Vishwavidyalaya ERP System</p>
   </div>
 </div>
 
 <div class="container">
-
-  <!-- TOC -->
   <div class="toc">
-    <a href="#overview">Overview</a>
-    <a href="#atlas">MongoDB Atlas</a>
-    <a href="#github">GitHub</a>
-    <a href="#railway">Railway Deploy</a>
-    <a href="#env">Environment Vars</a>
-    <a href="#verify">Verify</a>
-    <a href="#local">Local Dev</a>
-    <a href="#troubleshoot">Troubleshoot</a>
+    <a href="#arch">Architecture</a><a href="#atlas">MongoDB Atlas</a><a href="#github">GitHub</a>
+    <a href="#render">Render Deploy</a><a href="#env">Env Variables</a><a href="#verify">Verify</a>
+    <a href="#local">Local Dev</a><a href="#modules">Modules</a><a href="#troubleshoot">Troubleshoot</a>
   </div>
 
-  <!-- ── Overview ── -->
-  <div class="card" id="overview">
-    <h2><span class="num">0</span> Architecture Overview</h2>
-    <p>Your EduCore ERP runs as three components:</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;">
-      <div style="padding:18px;background:var(--surface2);border-radius:10px;text-align:center;">
-        <div style="font-size:26px;margin-bottom:8px;">🚂</div>
-        <div style="font-weight:600;margin-bottom:4px;">Railway</div>
-        <div style="font-size:12px;color:var(--muted);">Hosts Flask app via Gunicorn. Auto-deploys from GitHub.</div>
-      </div>
-      <div style="padding:18px;background:var(--surface2);border-radius:10px;text-align:center;">
-        <div style="font-size:26px;margin-bottom:8px;">🍃</div>
-        <div style="font-weight:600;margin-bottom:4px;">MongoDB Atlas</div>
-        <div style="font-size:12px;color:var(--muted);">Cloud database. Free M0 tier — 512 MB storage.</div>
-      </div>
-      <div style="padding:18px;background:var(--surface2);border-radius:10px;text-align:center;">
-        <div style="font-size:26px;margin-bottom:8px;">🐙</div>
-        <div style="font-weight:600;margin-bottom:4px;">GitHub</div>
-        <div style="font-size:12px;color:var(--muted);">Source code. Railway watches this for auto-deploys.</div>
-      </div>
+  <!-- ARCHITECTURE -->
+  <div class="card" id="arch">
+    <h2><span class="num">0</span> Architecture</h2>
+    <div class="arch-grid">
+      <div class="arch-box"><div class="arch-icon">🎓</div><div class="arch-title">DSVV ERP</div><div class="arch-sub">Flask + Gunicorn — Python web app with 15+ modules</div></div>
+      <div class="arch-box"><div class="arch-icon">🍃</div><div class="arch-title">MongoDB Atlas</div><div class="arch-sub">Cloud database — Free M0 tier. All ERP data stored here.</div></div>
+      <div class="arch-box"><div class="arch-icon">⚡</div><div class="arch-title">Render</div><div class="arch-sub">Free web hosting. Auto-deploys from GitHub on every push.</div></div>
     </div>
-    <div class="callout info">
-      <div class="callout-icon">💡</div>
-      <div>Railway free tier gives you <strong>$5/month credits</strong> — enough for a small Flask app. Atlas M0 is <strong>permanently free</strong>.</div>
-    </div>
+    <div class="callout ci"><span>ℹ️</span><span>Render Free tier gives 750 hrs/month. MongoDB Atlas M0 is permanently free (512 MB). Both are sufficient for a college ERP demo.</span></div>
   </div>
 
-  <!-- ── Step 1: Atlas ── -->
+  <!-- ATLAS -->
   <div class="card" id="atlas">
-    <h2><span class="num">1</span> Set Up MongoDB Atlas</h2>
-
-    <div class="step-grid">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <div class="step-title">Create a free account</div>
-          <div class="step-desc">Go to <a href="https://cloud.mongodb.com" target="_blank">cloud.mongodb.com</a> → Sign Up (free). Verify your email.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <div class="step-title">Create a new Project</div>
-          <div class="step-desc">Click <strong>New Project</strong> → name it <code>EduCore</code> → Create.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <div class="step-title">Build a Free Cluster (M0)</div>
-          <div class="step-desc">
-            Click <strong>Build a Database</strong> → choose <strong>M0 FREE</strong> tier →
-            Select your nearest region (e.g. AWS Mumbai) → Name it <code>Cluster0</code> → <strong>Create</strong>.
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-content">
-          <div class="step-title">Create a Database User</div>
-          <div class="step-desc">
-            In the <em>Security Quickstart</em>: choose <strong>Username and Password</strong> →
-            set username e.g. <code>educore_user</code> → generate a strong password →
-            <strong>Create User</strong>. <span style="color:var(--warning);">Save the password — you'll need it.</span>
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-content">
-          <div class="step-title">Allow all IP addresses (for Railway)</div>
-          <div class="step-desc">
-            In <em>Network Access</em> → <strong>Add IP Address</strong> →
-            click <strong>"Allow Access from Anywhere"</strong> → enter <code>0.0.0.0/0</code> → Confirm.
-            (Railway uses dynamic IPs, so this is required.)
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">6</div>
-        <div class="step-content">
-          <div class="step-title">Get your Connection String</div>
-          <div class="step-desc">
-            Go to <strong>Clusters → Connect → Drivers</strong> → choose <em>Python / 3.12 or later</em> →
-            copy the connection string. It looks like:
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <pre><code><span class="comment"># Your Atlas connection string (replace &lt;password&gt; and &lt;dbname&gt;)</span>
-<span class="val">mongodb+srv://educore_user:&lt;password&gt;@cluster0.abc12.mongodb.net/?retryWrites=true&amp;w=majority</span></code></pre>
-
-    <div class="callout warning">
-      <div class="callout-icon">⚠️</div>
-      <div>Replace <code>&lt;password&gt;</code> with the password you set in Step 4. Do NOT include angle brackets. The database (<code>college_erp</code>) will be created automatically when the app first writes to it.</div>
-    </div>
+    <h2><span class="num">1</span> MongoDB Atlas Setup</h2>
+    <div class="step"><div class="sn">1</div><div><div class="st">Create free account</div><div class="sd">Go to <a href="https://cloud.mongodb.com" target="_blank">cloud.mongodb.com</a> → Sign Up → verify email.</div></div></div>
+    <div class="step"><div class="sn">2</div><div><div class="st">Create new project</div><div class="sd">Click <strong>New Project</strong> → name it <code>DSVV-ERP</code> → Create Project.</div></div></div>
+    <div class="step"><div class="sn">3</div><div><div class="st">Build free cluster (M0)</div><div class="sd"><strong>Build a Database</strong> → <strong>M0 FREE</strong> → choose region nearest to you (e.g. AWS Mumbai ap-south-1) → Name: <code>Cluster0</code> → Create.</div></div></div>
+    <div class="step"><div class="sn">4</div><div><div class="st">Create database user</div><div class="sd">Security Quickstart → Username/Password → username: <code>dsvv_admin</code> → generate strong password → <strong>Create User</strong>. Save the password!</div></div></div>
+    <div class="step"><div class="sn">5</div><div><div class="st">Allow all IPs (for Render)</div><div class="sd">Network Access → Add IP Address → <strong>Allow Access from Anywhere</strong> → <code>0.0.0.0/0</code> → Confirm. Render uses dynamic IPs, so this is required.</div></div></div>
+    <div class="step"><div class="sn">6</div><div><div class="st">Get connection string</div><div class="sd">Clusters → Connect → <strong>Drivers</strong> → Python / 3.12+ → copy the string.</div></div></div>
+    <pre><code><span class="cmt"># Your Atlas URI (replace &lt;password&gt; with actual password — no angle brackets)</span>
+<span class="val">mongodb+srv://dsvv_admin:&lt;password&gt;@cluster0.xxxxx.mongodb.net/?retryWrites=true&amp;w=majority</span></code></pre>
+    <div class="callout cw"><span>⚠️</span><span>Special characters in password (@ ! # $ etc.) must be URL-encoded. Use <a href="https://www.urlencoder.org" target="_blank">urlencoder.org</a> to encode just the password part.</span></div>
   </div>
 
-  <!-- ── Step 2: GitHub ── -->
+  <!-- GITHUB -->
   <div class="card" id="github">
-    <h2><span class="num">2</span> Push Code to GitHub</h2>
-
-    <div class="callout info">
-      <div class="callout-icon">📦</div>
-      <div>Railway deploys directly from GitHub. You must push your code there first. <strong>Never commit your <code>.env</code> file</strong> — the <code>.gitignore</code> already excludes it.</div>
-    </div>
-
-    <h3>Open terminal in your project folder</h3>
-    <pre><code><span class="comment"># Navigate to the project</span>
-<span class="cmd">cd</span> college_erp
-
-<span class="comment"># Initialize Git repository</span>
+    <h2><span class="num">2</span> Push to GitHub</h2>
+    <div class="callout cd"><span>🔐</span><span>Never commit <code>.env</code> to GitHub — your <code>.gitignore</code> already excludes it.</span></div>
+    <h3>Initialize & push</h3>
+    <pre><code><span class="cmt"># In your project folder (dsvv_erp/)</span>
 <span class="cmd">git init</span>
 <span class="cmd">git add .</span>
-<span class="cmd">git commit -m "Initial commit – EduCore ERP with auth"</span></code></pre>
+<span class="cmd">git commit -m</span> <span class="val">"Initial commit — DSVV ERP full system"</span>
 
-    <h3>Create GitHub repo and push</h3>
-    <pre><code><span class="comment"># Create a new repo at github.com first (no README), then:</span>
-<span class="cmd">git remote add origin</span> https://github.com/YOUR_USERNAME/college-erp.git
+<span class="cmt"># Create new repo at github.com (no README), then:</span>
+<span class="cmd">git remote add origin</span> https://github.com/YOUR_USERNAME/dsvv-erp.git
 <span class="cmd">git branch -M main</span>
 <span class="cmd">git push -u origin main</span></code></pre>
-
-    <div class="callout success">
-      <div class="callout-icon">✅</div>
-      <div>Your code is now on GitHub. From here, every <code>git push</code> will trigger an automatic redeploy on Railway.</div>
-    </div>
+    <div class="callout cs"><span>✅</span><span>Every future <code>git push origin main</code> will auto-redeploy on Render.</span></div>
   </div>
 
-  <!-- ── Step 3: Railway ── -->
-  <div class="card" id="railway">
-    <h2><span class="num">3</span> Deploy on Railway</h2>
-
-    <div class="step-grid">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <div class="step-title">Sign up / log in to Railway</div>
-          <div class="step-desc">Go to <a href="https://railway.app" target="_blank">railway.app</a> → <strong>Login with GitHub</strong> (recommended for auto-deploys).</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <div class="step-title">Create a New Project</div>
-          <div class="step-desc">Click <strong>New Project</strong> → <strong>Deploy from GitHub repo</strong> → authorize Railway → select your <code>college-erp</code> repo.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <div class="step-title">Railway auto-detects Python</div>
-          <div class="step-desc">Railway reads your <code>Procfile</code> and <code>requirements.txt</code> automatically. It will install deps and start Gunicorn. Wait for the build to finish (1–2 min).</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-content">
-          <div class="step-title">Add Environment Variables</div>
-          <div class="step-desc">Go to your service → <strong>Variables</strong> tab → add all variables from the table below. This is the most important step.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-content">
-          <div class="step-title">Generate a Public URL</div>
-          <div class="step-desc">Go to <strong>Settings → Networking</strong> → click <strong>Generate Domain</strong>. You'll get a URL like <code>college-erp-production.up.railway.app</code>.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">6</div>
-        <div class="step-content">
-          <div class="step-title">Redeploy after adding variables</div>
-          <div class="step-desc">After adding env vars, Railway auto-redeploys. Watch the <strong>Deployments</strong> tab — it should show <em>Success</em> in green.</div>
-        </div>
-      </div>
-    </div>
+  <!-- RENDER -->
+  <div class="card" id="render">
+    <h2><span class="num">3</span> Deploy on Render</h2>
+    <div class="step"><div class="sn">1</div><div><div class="st">Sign up at Render</div><div class="sd">Go to <a href="https://render.com" target="_blank">render.com</a> → <strong>Sign up with GitHub</strong>.</div></div></div>
+    <div class="step"><div class="sn">2</div><div><div class="st">New Web Service</div><div class="sd">Dashboard → <strong>New +</strong> → <strong>Web Service</strong> → Connect GitHub → select your <code>dsvv-erp</code> repo.</div></div></div>
+    <div class="step"><div class="sn">3</div><div><div class="st">Configure settings</div><div class="sd">
+      <strong>Name:</strong> dsvv-erp<br/>
+      <strong>Runtime:</strong> Python 3<br/>
+      <strong>Build Command:</strong> <code>pip install -r requirements.txt</code><br/>
+      <strong>Start Command:</strong> <code>gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120</code><br/>
+      <strong>Instance Type:</strong> Free
+    </div></div></div>
+    <div class="step"><div class="sn">4</div><div><div class="st">Add environment variables</div><div class="sd">Scroll to <strong>Environment Variables</strong> section → add all variables from the table below → <strong>Create Web Service</strong>.</div></div></div>
+    <div class="step"><div class="sn">5</div><div><div class="st">Wait for first deploy</div><div class="sd">First build takes 3–5 minutes. Watch the log — you should see <code>Listening on 0.0.0.0:XXXX</code>.</div></div></div>
+    <div class="step"><div class="sn">6</div><div><div class="st">Open your live URL</div><div class="sd">Render gives you a URL like <code>https://dsvv-erp.onrender.com</code> — click it and log in!</div></div></div>
   </div>
 
-  <!-- ── Step 4: Env Vars ── -->
+  <!-- ENV VARS -->
   <div class="card" id="env">
-    <h2><span class="num">4</span> Environment Variables (Railway)</h2>
-    <p>Go to Railway → your service → <strong>Variables</strong> tab → add each of these:</p>
-
+    <h2><span class="num">4</span> Environment Variables</h2>
+    <p>In Render Dashboard → your service → <strong>Environment</strong> tab, add:</p>
     <table>
       <thead><tr><th>Variable</th><th>Value</th><th>Required?</th></tr></thead>
       <tbody>
-        <tr>
-          <td><code>MONGO_URI</code></td>
-          <td style="font-size:12px;color:var(--muted);">Your full Atlas connection string<br/><code style="color:#f5a623;font-size:11px;">mongodb+srv://user:pass@cluster0.xxxx.mongodb.net/?retryWrites=true&amp;w=majority</code></td>
-          <td><span class="required">Required</span></td>
-        </tr>
-        <tr>
-          <td><code>SECRET_KEY</code></td>
-          <td style="color:var(--muted);font-size:13px;">A long random string. Generate one:<br/><code>python3 -c "import secrets; print(secrets.token_hex(32))"</code></td>
-          <td><span class="required">Required</span></td>
-        </tr>
-        <tr>
-          <td><code>DB_NAME</code></td>
-          <td><code>college_erp</code></td>
-          <td><span class="optional">Optional</span> (default: college_erp)</td>
-        </tr>
-        <tr>
-          <td><code>PORT</code></td>
-          <td style="color:var(--muted);font-size:13px;">Auto-set by Railway</td>
-          <td><span class="optional">Auto</span></td>
-        </tr>
+        <tr><td><code>MONGO_URI</code></td><td style="color:var(--muted);font-size:12px;">Full Atlas connection string with password</td><td><span class="badge br">Required</span></td></tr>
+        <tr><td><code>SECRET_KEY</code></td><td style="color:var(--muted);font-size:12px;">Long random string — Render can auto-generate</td><td><span class="badge br">Required</span></td></tr>
+        <tr><td><code>DB_NAME</code></td><td><code>dsvv_erp</code></td><td><span class="badge bo">Optional</span></td></tr>
       </tbody>
     </table>
-
-    <div class="callout danger" style="margin-top:16px;">
-      <div class="callout-icon">🔐</div>
-      <div><strong>Never put real secrets in code or push them to GitHub.</strong> Only set them in Railway's Variables panel. The <code>.env</code> file is for local dev only and is git-ignored.</div>
-    </div>
+    <h3>Generate SECRET_KEY locally</h3>
+    <pre><code><span class="cmd">python3 -c</span> <span class="val">"import secrets; print(secrets.token_hex(32))"</span>
+<span class="cmt"># Copy the output → paste into Render's SECRET_KEY field</span></code></pre>
+    <div class="callout cd"><span>🔐</span><span>Never hardcode secrets in <code>app.py</code>. Only set them in Render's environment panel.</span></div>
   </div>
 
-  <!-- ── Step 5: Verify ── -->
+  <!-- VERIFY -->
   <div class="card" id="verify">
-    <h2><span class="num">5</span> Verify the Live App</h2>
+    <h2><span class="num">5</span> Verify the Deployment</h2>
     <ol>
-      <li>Open your Railway URL (e.g. <code>https://college-erp-production.up.railway.app</code>)</li>
-      <li>You should see the <strong>EduCore login page</strong></li>
-      <li>Log in with <code>admin</code> / <code>admin123</code> — the default admin is auto-created on first boot</li>
-      <li>Go to <strong>User Management</strong> and change the admin password immediately</li>
-      <li>Add a student and teacher, then create accounts for them to verify all three login roles work</li>
+      <li>Open your Render URL → you should see the DSVV ERP login page</li>
+      <li>Log in with <code>admin</code> / <code>admin123</code> (auto-created on first boot)</li>
+      <li>Go to <strong>User Management</strong> → change the admin password immediately</li>
+      <li>Add a Course, then a Student, then create a student user account and test login</li>
+      <li>Add a Teacher, create a teacher user account, test attendance marking</li>
+      <li>Check Analytics → should show charts after some data is entered</li>
     </ol>
-    <div class="callout success" style="margin-top:14px;">
-      <div class="callout-icon">🎉</div>
-      <div>If you see the dashboard — you're live! MongoDB Atlas is connected and all data will persist in the cloud.</div>
-    </div>
+    <div class="callout cs" style="margin-top:14px;"><span>🎉</span><span>If you see the dashboard — you're live! All data is stored in MongoDB Atlas.</span></div>
   </div>
 
-  <!-- ── Local Dev ── -->
+  <!-- LOCAL DEV -->
   <div class="card" id="local">
-    <h2><span class="num">6</span> Local Development with .env</h2>
-    <p>For local testing (without Railway), use the <code>.env.example</code> file:</p>
-    <pre><code><span class="comment"># 1. Copy the example file</span>
+    <h2><span class="num">6</span> Local Development</h2>
+    <pre><code><span class="cmt"># 1. Copy env template</span>
 <span class="cmd">cp</span> .env.example .env
-
-<span class="comment"># 2. Edit .env and fill in your Atlas URI and secret key</span>
+<span class="cmt"># 2. Fill in MONGO_URI and SECRET_KEY in .env</span>
 <span class="cmd">nano</span> .env
 
-<span class="comment"># 3. Install dependencies</span>
+<span class="cmt"># 3. Create virtualenv (optional but recommended)</span>
+<span class="cmd">python3 -m venv</span> venv
+<span class="cmd">source</span> venv/bin/activate  <span class="cmt"># Windows: venv\Scripts\activate</span>
+
+<span class="cmt"># 4. Install dependencies</span>
 <span class="cmd">pip install</span> -r requirements.txt
 
-<span class="comment"># 4. Run locally</span>
-<span class="cmd">python</span> app.py</code></pre>
-
-    <div class="callout info" style="margin-top:10px;">
-      <div class="callout-icon">💡</div>
-      <div><code>python-dotenv</code> is already in <code>requirements.txt</code>. Flask will auto-load your <code>.env</code> file so all env vars are available locally.</div>
-    </div>
-
-    <h3>Generate a strong SECRET_KEY</h3>
-    <pre><code><span class="cmd">python3 -c</span> <span class="val">"import secrets; print(secrets.token_hex(32))"</span>
-<span class="comment"># Example output: a3f8c2e1d9b6f4a7c0e5b2d8f1a6c9e3b4d7f0a2c5e8b1d4f7a0c3e6b9d2f5</span></code></pre>
+<span class="cmt"># 5. Run the app</span>
+<span class="cmd">python</span> app.py
+<span class="cmt"># Open http://localhost:5000</span></code></pre>
   </div>
 
-  <!-- ── Troubleshoot ── -->
+  <!-- MODULES -->
+  <div class="card" id="modules">
+    <h2><span class="num">7</span> All Modules — Feature Summary</h2>
+    <table>
+      <thead><tr><th>Module</th><th>Admin</th><th>Teacher</th><th>Student</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge bp">Dashboard</span></td><td>Stats, quick actions, analytics</td><td>Subject overview</td><td>Personal overview</td></tr>
+        <tr><td><span class="badge bp">Students</span></td><td>Full CRUD + ID card + export</td><td>—</td><td>View own profile + ID card</td></tr>
+        <tr><td><span class="badge bp">Teachers</span></td><td>Full CRUD</td><td>View own profile</td><td>—</td></tr>
+        <tr><td><span class="badge bp">Courses</span></td><td>Full CRUD with semesters, fees</td><td>—</td><td>View enrolled course</td></tr>
+        <tr><td><span class="badge bp">Attendance</span></td><td>View all, mark, delete, CSV export</td><td>Mark own subject only + duplicate guard</td><td>View own with subject filter</td></tr>
+        <tr><td><span class="badge bp">Timetable</span></td><td>Add/delete slots by day</td><td>—</td><td>View own course timetable</td></tr>
+        <tr><td><span class="badge bp">Assignments</span></td><td>View all, manage submissions</td><td>Post assignments, view submissions</td><td>View + submit answers online</td></tr>
+        <tr><td><span class="badge bp">Exam Schedule</span></td><td>Schedule exams per course</td><td>View own subject exams</td><td>View own course exams</td></tr>
+        <tr><td><span class="badge bp">Results</span></td><td>Add 6-subject results, auto-grade</td><td>—</td><td>View marksheet + print</td></tr>
+        <tr><td><span class="badge bp">Fees</span></td><td>Full CRUD + status filter + CSV export</td><td>—</td><td>View own with totals</td></tr>
+        <tr><td><span class="badge bp">Notices</span></td><td>Post with priority, category, target</td><td>View notices</td><td>View targeted notices</td></tr>
+        <tr><td><span class="badge bp">Events</span></td><td>Full CRUD with venue, time</td><td>View events</td><td>View events</td></tr>
+        <tr><td><span class="badge bp">Library</span></td><td>Full CRUD, edition, rack tracking</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="badge bp">Hostel</span></td><td>Full CRUD, room types, fees</td><td>—</td><td>View own hostel info</td></tr>
+        <tr><td><span class="badge bp">Grievances</span></td><td>View all, respond, update status</td><td>—</td><td>Submit + track own complaints</td></tr>
+        <tr><td><span class="badge bp">Analytics</span></td><td>5 Chart.js charts + fee summary</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="badge bp">User Mgmt</span></td><td>Create/edit/toggle/delete users, link records</td><td>Change own password</td><td>Change own password</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TROUBLESHOOT -->
   <div class="card" id="troubleshoot">
-    <h2><span class="num">7</span> Troubleshooting</h2>
-
-    <h3>App crashes on Railway</h3>
-    <p>Check <strong>Deploy Logs</strong> in Railway dashboard. Common causes:</p>
+    <h2><span class="num">8</span> Troubleshooting</h2>
+    <h3>App crashes on Render</h3>
+    <p>Check Render → your service → <strong>Logs</strong> tab. Common causes:</p>
     <ul>
-      <li><strong>Missing MONGO_URI</strong> — variable not set in Railway Variables tab</li>
-      <li><strong>Wrong Atlas password</strong> — special chars in password must be URL-encoded (e.g. <code>@</code> → <code>%40</code>)</li>
-      <li><strong>IP not whitelisted</strong> — ensure <code>0.0.0.0/0</code> is in Atlas Network Access</li>
+      <li><strong>MONGO_URI not set</strong> → add it in Environment tab, redeploy</li>
+      <li><strong>Wrong Atlas password</strong> → special chars must be URL-encoded</li>
+      <li><strong>IP not whitelisted</strong> → Atlas → Network Access → add <code>0.0.0.0/0</code></li>
+      <li><strong>Import error</strong> → check <code>requirements.txt</code> has all packages</li>
     </ul>
-
-    <h3>Authentication error from MongoDB</h3>
-    <pre><code><span class="comment"># Bad: password contains special characters not URL-encoded</span>
-<span class="val">mongodb+srv://user:p@ss!word@cluster...</span>
-
-<span class="comment"># Good: URL-encode special chars</span>
-<span class="val">mongodb+srv://user:p%40ss%21word@cluster...</span></code></pre>
-
-    <h3>Port binding error</h3>
-    <p>The <code>Procfile</code> uses <code>$PORT</code> which Railway sets automatically. Never hardcode a port number.</p>
-
-    <h3>Changes not deploying</h3>
+    <h3>Free tier sleep (Render)</h3>
+    <p>Render free tier spins down after 15 min of inactivity. First request after sleep takes ~30 seconds. Upgrade to a paid plan or use UptimeRobot to ping every 10 min.</p>
+    <h3>Push changes</h3>
     <pre><code><span class="cmd">git add .</span>
-<span class="cmd">git commit -m</span> <span class="val">"your change description"</span>
+<span class="cmd">git commit -m</span> <span class="val">"your change"</span>
 <span class="cmd">git push origin main</span>
-<span class="comment"># Railway auto-deploys on every push to main</span></code></pre>
-
+<span class="cmt"># Render auto-deploys in ~2 minutes</span></code></pre>
     <h3>Reset admin password</h3>
-    <p>If you're locked out, connect to Atlas via Compass or the web shell and run:</p>
-    <pre><code><span class="comment"># In MongoDB Atlas Data Explorer → college_erp → users collection</span>
-<span class="comment"># Find the admin document and update the password field with a new hash.</span>
-<span class="comment"># Or delete the admin document — the app will recreate it on next boot.</span></code></pre>
+    <p>In MongoDB Atlas → Data Explorer → <code>dsvv_erp</code> → <code>users</code> collection → delete the admin document. The app recreates it with <code>admin / admin123</code> on next boot.</p>
   </div>
 
-  <!-- Footer -->
   <div style="text-align:center;padding:32px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--border);margin-top:12px;">
-    <div style="font-weight:600;margin-bottom:6px;">EduCore ERP — Deployment Guide</div>
-    <div>Flask · MongoDB Atlas · Railway · Gunicorn</div>
+    <div style="font-weight:700;margin-bottom:4px;">DSVV ERP — Deployment Guide</div>
+    <div>Flask · MongoDB Atlas · Render · Gunicorn · Chart.js</div>
+    <div style="margin-top:6px;">Dev Sanskriti Vishwavidyalaya, Haridwar</div>
   </div>
-
 </div>
 </body>
 </html>

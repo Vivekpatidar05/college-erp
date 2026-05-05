@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Timetable{% endblock %}{% block page_title %}Timetable{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Timetable</h1></div><a href="{{ url_for('add_timetable') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Slot</a></div>
+<div class="search-bar"><form method="GET" style="display:flex;gap:10px;flex-wrap:wrap;">
+<select name="course" class="search-input" style="max-width:200px;padding:9px 14px;"><option value="">All Courses</option>{% for c in courses_list %}<option {% if course_filter==c.name %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select>
+<input class="search-input" name="sem" value="{{ sem_filter }}" style="max-width:160px;" placeholder="Semester filter…"/>
+<button type="submit" class="btn btn-primary">Filter</button>{% if course_filter or sem_filter %}<a href="{{ url_for('timetable') }}" class="btn btn-secondary">Clear</a>{% endif %}
+</form></div>
+<div class="card">
+<div class="card-header"><div><div class="card-title">Weekly Schedule</div><div class="card-subtitle">{% if course_filter %}{{ course_filter }}{% else %}All Courses{% endif %}</div></div></div>
+{% if by_day %}
+<div style="overflow-x:auto;">
+{% for day in days %}{% if by_day.get(day) %}
+<div style="margin-bottom:20px;">
+<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-calendar-day"></i> {{ day }}</div>
+<div style="display:grid;gap:8px;">
+{% for slot in by_day[day] %}
+<div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 1fr auto;gap:12px;align-items:center;padding:12px 16px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border);">
+<div style="font-size:12px;color:var(--text-muted);font-weight:600;">{{ slot.time_start }}–{{ slot.time_end }}</div>
+<div style="font-weight:700;">{{ slot.subject }}</div>
+<div style="font-size:12px;color:var(--text-muted);">{{ slot.get('teacher','—') }}</div>
+<div><span class="badge badge-purple">{{ slot.get('course','—') }}</span></div>
+<div><span class="badge badge-grey">Room {{ slot.get('room','—') }}</span></div>
+<a href="{{ url_for('delete_timetable',id=slot._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+</div>{% endfor %}
+</div></div>{% endif %}{% endfor %}
+</div>
+{% else %}<div class="empty-state"><i class="fas fa-clock"></i><p>No timetable slots. <a href="{{ url_for('add_timetable') }}" style="color:var(--primary);">Add slots.</a></p></div>{% endif %}
+</div>{% endblock %}

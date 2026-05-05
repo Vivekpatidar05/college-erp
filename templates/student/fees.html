@@ -1,55 +1,24 @@
 {% extends "base.html" %}
-{% block title %}My Fees{% endblock %}
-{% block page_title %}My Fees{% endblock %}
-
+{% block title %}My Fees{% endblock %}{% block page_title %}My Fees{% endblock %}
 {% block content %}
-<div class="page-header"><div><h1>My Fees</h1><div class="breadcrumb">Fee details for {{ student.name }}</div></div></div>
-
-<div class="stats-grid" style="margin-bottom:24px;">
-  <div class="stat-card">
-    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
-    <div><div class="stat-value" style="font-size:20px;">₹{{ total_paid }}</div><div class="stat-label">Total Paid</div></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon red"><i class="fas fa-exclamation-circle"></i></div>
-    <div><div class="stat-value" style="font-size:20px;">₹{{ total_pending }}</div><div class="stat-label">Total Pending</div></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon purple"><i class="fas fa-list"></i></div>
-    <div><div class="stat-value">{{ fees|length }}</div><div class="stat-label">Total Records</div></div>
-  </div>
+<div class="page-header"><div><h1>My Fees</h1></div></div>
+<div class="stats-grid" style="margin-bottom:22px;">
+<div class="stat-card"><div class="stat-icon si-green"><i class="fas fa-check-circle"></i></div><div><div class="stat-value" style="font-size:20px;">₹{{ "{:,}".format(total_paid) }}</div><div class="stat-label">Total Paid</div></div></div>
+<div class="stat-card"><div class="stat-icon si-red"><i class="fas fa-exclamation-circle"></i></div><div><div class="stat-value" style="font-size:20px;">₹{{ "{:,}".format(total_pending) }}</div><div class="stat-label">Pending</div></div></div>
+<div class="stat-card"><div class="stat-icon si-purple"><i class="fas fa-list"></i></div><div><div class="stat-value">{{ fees|length }}</div><div class="stat-label">Records</div></div></div>
 </div>
-
-<div class="card">
-  <div class="card-header"><div><div class="card-title">Fee Records</div></div></div>
-  {% if fees %}
-  <div class="table-wrapper">
-    <table>
-      <thead><tr><th>#</th><th>Fee Type</th><th>Amount</th><th>Due Date</th><th>Paid Date</th><th>Status</th><th>Remarks</th></tr></thead>
-      <tbody>
-        {% for f in fees %}
-        <tr>
-          <td style="color:var(--text-muted)">{{ loop.index }}</td>
-          <td style="font-weight:500">{{ f.get('fee_type','—') }}</td>
-          <td style="font-weight:700;font-size:15px;">₹{{ f.get('amount','0') }}</td>
-          <td>{{ f.get('due_date','—') }}</td>
-          <td>{{ f.get('paid_date','—') or '—' }}</td>
-          <td><span class="badge {% if f.status=='Paid' %}badge-success{% elif f.status=='Overdue' %}badge-danger{% else %}badge-warning{% endif %}">{{ f.status }}</span></td>
-          <td style="font-size:12px;color:var(--text-muted);">{{ f.get('remarks','—') }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% else %}
-  <div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>No fee records found.</p></div>
-  {% endif %}
-</div>
-
-{% if total_pending > 0 %}
-<div style="margin-top:16px;background:rgba(255,92,106,0.07);border:1px solid rgba(255,92,106,0.2);border-radius:12px;padding:16px 20px;font-size:13px;color:var(--danger);">
-  <i class="fas fa-exclamation-triangle" style="margin-right:6px;"></i>
-  You have ₹{{ total_pending }} in pending fees. Please contact the admin to clear your dues.
-</div>
-{% endif %}
-{% endblock %}
+{% if total_pending > 0 %}<div class="alert alert-danger" style="margin-bottom:18px;"><i class="fas fa-exclamation-triangle"></i>You have ₹{{ "{:,}".format(total_pending) }} in pending fees. Please contact the admin office to clear dues.</div>{% endif %}
+<div class="card"><div class="card-header"><div><div class="card-title">Fee Records</div></div></div>
+{% if fees %}<div class="table-wrapper"><table><thead><tr><th>#</th><th>Fee Type</th><th>Amount</th><th>Due Date</th><th>Paid Date</th><th>Txn ID</th><th>Status</th><th>Remarks</th></tr></thead><tbody>
+{% for f in fees %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td style="font-weight:600;">{{ f.get('fee_type','—') }}</td>
+<td style="font-weight:700;font-size:15px;">₹{{ f.get('amount','0') }}</td>
+<td>{{ f.get('due_date','—') }}</td>
+<td>{{ f.get('paid_date','—') or '—' }}</td>
+<td class="mono" style="font-size:11px;color:var(--text-muted);">{{ f.get('transaction_id','—') }}</td>
+<td><span class="badge {% if f.status=='Paid' %}badge-success{% elif f.status=='Overdue' %}badge-danger{% else %}badge-warning{% endif %}">{{ f.status }}</span></td>
+<td style="font-size:12px;color:var(--text-muted);">{{ f.get('remarks','—') }}</td>
+</tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>No fee records found.</p></div>{% endif %}
+</div>{% endblock %}

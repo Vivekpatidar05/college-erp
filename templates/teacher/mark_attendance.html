@@ -1,70 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Mark Attendance{% endblock %}
-{% block page_title %}Mark Attendance{% endblock %}
-
+{% block title %}Mark Attendance{% endblock %}{% block page_title %}Mark Attendance{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div>
-    <h1>Mark Attendance</h1>
-    <div class="breadcrumb">Subject: <strong style="color:var(--primary);">{{ subject }}</strong></div>
-  </div>
-  <a href="{{ url_for('teacher_attendance_history') }}" class="btn btn-secondary"><i class="fas fa-history"></i> History</a>
+<div class="page-header"><div><h1>Mark Attendance</h1><div class="breadcrumb">Subject: <strong style="color:var(--primary);">{{ subject }}</strong></div></div><a href="{{ url_for('teacher_attendance_history') }}" class="btn btn-secondary"><i class="fas fa-history"></i> History</a></div>
+<div class="callout info" style="margin-bottom:18px;"><i class="fas fa-info-circle fa-lg"></i><div>You are marking for <strong>{{ subject }}</strong>. Duplicate entries for the same date &amp; course are blocked automatically.</div></div>
+<div class="card" style="max-width:900px;"><form method="POST">
+<div class="form-grid" style="margin-bottom:22px;">
+<div class="form-group"><label>Date *</label><input name="date" type="date" required value="{{ now }}"/></div>
+<div class="form-group"><label>Course *</label><select name="course" required><option value="">-- Select --</option>{% for c in courses %}<option>{{ c.name }}</option>{% endfor %}</select></div>
 </div>
-
-<div style="background:rgba(0,212,180,0.08);border:1px solid rgba(0,212,180,0.2);border-radius:12px;padding:14px 20px;margin-bottom:22px;font-size:13.5px;color:#00d4b4;display:flex;align-items:center;gap:10px;">
-  <i class="fas fa-info-circle fa-lg"></i>
-  You are marking attendance for <strong style="margin:0 4px;">{{ subject }}</strong>.
-  Duplicate entries for the same date &amp; course are automatically blocked.
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+<span style="font-size:13px;font-weight:600;color:var(--text-muted);">{{ students|length }} students</span>
+<div style="display:flex;gap:8px;"><button type="button" id="mark-all-present" class="btn btn-success btn-sm"><i class="fas fa-check-double"></i> All Present</button><button type="button" id="mark-all-absent" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> All Absent</button></div>
 </div>
-
-<div class="card" style="max-width:860px;">
-  <form method="POST">
-    <div class="form-grid" style="margin-bottom:24px;">
-      <div class="form-group">
-        <label>Date *</label>
-        <input name="date" type="date" required value="{{ now }}"/>
-      </div>
-      <div class="form-group">
-        <label>Course *</label>
-        <select name="course" required>
-          <option value="">-- Select Course --</option>
-          {% for c in courses %}<option>{{ c.name }}</option>{% endfor %}
-        </select>
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div style="font-size:13px;font-weight:600;color:var(--text-muted);">{{ students|length }} Students</div>
-      <div style="display:flex;gap:8px;">
-        <button type="button" id="mark-all-present" class="btn btn-success btn-sm"><i class="fas fa-check-double"></i> All Present</button>
-        <button type="button" id="mark-all-absent"  class="btn btn-danger btn-sm"><i class="fas fa-times"></i> All Absent</button>
-      </div>
-    </div>
-
-    {% if students %}
-      {% for s in students %}
-      <div class="att-row">
-        <div>
-          <div style="font-weight:500;font-size:14px;">{{ s.name }}</div>
-          <div style="font-size:12px;color:var(--text-muted);">{{ s.roll_no }}</div>
-        </div>
-        <div style="font-size:12.5px;color:var(--text-muted);">{{ s.get('course','') }}</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <input type="hidden" name="roll_no" value="{{ s.roll_no }}"/>
-          <select name="status" class="att-status" style="padding:7px 12px;font-size:13px;">
-            <option>Present</option><option>Absent</option><option>Late</option>
-          </select>
-        </div>
-      </div>
-      {% endfor %}
-    {% else %}
-    <div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students in system. Ask admin to add students.</p></div>
-    {% endif %}
-
-    <div class="form-actions" style="margin-top:24px;">
-      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Submit Attendance</button>
-      <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary">Cancel</a>
-    </div>
-  </form>
-</div>
-{% endblock %}
+{% for s in students %}
+<div class="att-row"><div><div style="font-weight:600;font-size:13.5px;">{{ s.name }}</div><div style="font-size:11.5px;color:var(--text-muted);">{{ s.roll_no }}</div></div>
+<div style="font-size:12px;color:var(--text-muted);">{{ s.get('course','') }} · {{ s.get('semester','') }}</div>
+<div><input type="hidden" name="roll_no" value="{{ s.roll_no }}"/><select name="status" class="att-status" style="padding:7px 12px;font-size:13px;"><option>Present</option><option>Absent</option><option>Late</option></select></div>
+</div>{% endfor %}
+{% if not students %}<div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students. Ask admin to add students first.</p></div>{% endif %}
+<div class="form-actions" style="margin-top:20px;"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Submit Attendance</button><a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}

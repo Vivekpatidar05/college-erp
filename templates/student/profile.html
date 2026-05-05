@@ -1,57 +1,41 @@
 {% extends "base.html" %}
-{% block title %}My Profile{% endblock %}
-{% block page_title %}My Profile{% endblock %}
-
+{% block title %}My Profile{% endblock %}{% block page_title %}My Profile{% endblock %}
 {% block content %}
-<div class="page-header"><div><h1>My Profile</h1><div class="breadcrumb">Your personal information</div></div></div>
-
-<div style="display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;">
-  <!-- Avatar card -->
-  <div class="card" style="text-align:center;padding:32px 24px;">
-    <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#f5a623,#e17055);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:#fff;margin:0 auto 16px;">
-      {{ student.name[0] | upper }}
-    </div>
-    <div style="font-size:18px;font-weight:700;margin-bottom:4px;">{{ student.name }}</div>
-    <div style="margin-bottom:16px;"><span class="badge badge-warning" style="font-size:13px;padding:5px 14px;">{{ student.roll_no }}</span></div>
-    <div style="font-size:13px;color:var(--text-muted);">{{ student.get('course','—') }}</div>
-    <div style="font-size:13px;color:var(--text-muted);">{{ student.get('year','—') }}</div>
-    {% if course %}
-    <div style="margin-top:20px;padding:14px;background:var(--surface2);border-radius:10px;text-align:left;">
-      <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Course Info</div>
-      <div style="font-size:13px;margin-bottom:4px;"><span style="color:var(--text-muted);">Duration:</span> {{ course.get('duration','—') }}</div>
-      <div style="font-size:13px;margin-bottom:4px;"><span style="color:var(--text-muted);">Department:</span> {{ course.get('dept','—') }}</div>
-      <div style="font-size:13px;"><span style="color:var(--text-muted);">Annual Fee:</span> ₹{{ course.get('fees','—') }}</div>
-    </div>
-    {% endif %}
-  </div>
-
-  <!-- Details card -->
-  <div class="card">
-    <div class="card-title" style="margin-bottom:20px;">Personal Details</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-      {% for label, val in [
-        ('Full Name', student.name),
-        ('Roll Number', student.roll_no),
-        ('Email', student.get('email','—')),
-        ('Phone', student.get('phone','—')),
-        ('Date of Birth', student.get('dob','—')),
-        ('Gender', student.get('gender','—')),
-        ('Course', student.get('course','—')),
-        ('Year / Semester', student.get('year','—')),
-        ('Enrolled On', student.get('created_at','—')),
-      ] %}
-      <div style="padding:14px;background:var(--surface2);border-radius:10px;">
-        <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">{{ label }}</div>
-        <div style="font-size:14px;font-weight:500;">{{ val }}</div>
-      </div>
-      {% endfor %}
-    </div>
-    {% if student.get('address') %}
-    <div style="margin-top:16px;padding:14px;background:var(--surface2);border-radius:10px;">
-      <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Address</div>
-      <div style="font-size:14px;font-weight:500;line-height:1.6;">{{ student.address }}</div>
-    </div>
-    {% endif %}
-  </div>
+<div class="page-header"><div><h1>My Profile</h1></div><a href="{{ url_for('student_my_id_card') }}" class="btn btn-teal btn-sm"><i class="fas fa-id-card"></i> View ID Card</a></div>
+<div style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;flex-wrap:wrap;">
+<div class="card" style="text-align:center;padding:32px 20px;">
+  <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#d97706,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:#fff;margin:0 auto 14px;">{{ student.name[0]|upper }}</div>
+  <div style="font-size:18px;font-weight:800;margin-bottom:6px;">{{ student.name }}</div>
+  <span class="badge badge-warning mono" style="font-size:13px;padding:4px 14px;">{{ student.roll_no }}</span>
+  <div style="margin-top:12px;font-size:13px;color:var(--text-muted);">{{ student.get('course','—') }}</div>
+  <div style="font-size:13px;color:var(--text-muted);">{{ student.get('semester','—') }}</div>
+  {% if student.get('blood_group') %}<div style="margin-top:10px;"><span class="badge badge-danger">{{ student.blood_group }}</span></div>{% endif %}
+  {% if course %}
+  <div style="margin-top:18px;padding:14px;background:var(--surface2);border-radius:10px;text-align:left;">
+    <div style="font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Course Info</div>
+    {% for lbl,val in [('Code',course.get('code','—')),('Duration',course.get('duration','—')),('Dept',course.get('dept','—')),('Annual Fee','₹'+course.get('fees','—'))] %}
+    <div style="font-size:12.5px;margin-bottom:4px;display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">{{ lbl }}</span><span style="font-weight:600;">{{ val }}</span></div>{% endfor %}
+  </div>{% endif %}
+  {% if hostel %}
+  <div style="margin-top:12px;padding:14px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);border-radius:10px;text-align:left;">
+    <div style="font-size:10.5px;font-weight:700;color:var(--teal);text-transform:uppercase;margin-bottom:8px;"><i class="fas fa-building" style="margin-right:5px;"></i>Hostel</div>
+    <div style="font-size:12.5px;margin-bottom:3px;">{{ hostel.get('hostel_name','—') }}</div>
+    <div style="font-size:12.5px;color:var(--text-muted);">Room {{ hostel.get('room_no','—') }} · {{ hostel.get('room_type','—') }}</div>
+  </div>{% endif %}
 </div>
-{% endblock %}
+<div class="card">
+  <div class="card-title" style="margin-bottom:18px;">Personal Information</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+  {% for lbl,val in [('Full Name',student.name),('Roll Number',student.roll_no),('Email',student.get('email','—')),('Phone',student.get('phone','—')),('Date of Birth',student.get('dob','—')),('Gender',student.get('gender','—')),('Category',student.get('category','—')),('Blood Group',student.get('blood_group','—')),('Guardian',student.get('guardian','—')),('Guardian Phone',student.get('guardian_ph','—')),('Enrolled On',student.get('created_at','—'))] %}
+  <div style="padding:12px 14px;background:var(--surface2);border-radius:10px;">
+    <div style="font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">{{ lbl }}</div>
+    <div style="font-size:14px;font-weight:600;">{{ val }}</div>
+  </div>{% endfor %}
+  </div>
+  {% if student.get('address') %}
+  <div style="margin-top:12px;padding:14px;background:var(--surface2);border-radius:10px;">
+    <div style="font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:5px;">Address</div>
+    <div style="font-size:14px;line-height:1.6;">{{ student.address }}</div>
+  </div>{% endif %}
+</div>
+</div>{% endblock %}

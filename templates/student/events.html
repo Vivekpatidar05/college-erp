@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Events{% endblock %}{% block page_title %}Events & Activities{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Events &amp; Activities</h1></div></div>
+{% if events %}
+<div style="display:grid;gap:12px;">{% for e in events %}
+<div class="event-card">
+<div class="event-date-box"><div class="event-day">{{ e.date.split('-')[2] if '-' in e.date else '?' }}</div><div class="event-mon">{{ e.date.split('-')[1] if '-' in e.date else '' }}</div></div>
+<div style="flex:1;"><div style="font-size:15px;font-weight:700;margin-bottom:4px;">{{ e.title }}</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;"><span class="badge badge-purple">{{ e.category }}</span></div>
+<div style="font-size:13px;color:var(--text-muted);">{{ e.description }}</div>
+<div style="font-size:12px;color:var(--text-dim);margin-top:6px;"><i class="fas fa-clock" style="margin-right:4px;"></i>{{ e.time }} · <i class="fas fa-map-marker-alt" style="margin-right:4px;"></i>{{ e.venue }}</div>
+</div></div>{% endfor %}</div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-calendar-star"></i><p>No events posted yet.</p></div></div>{% endif %}
+{% endblock %}

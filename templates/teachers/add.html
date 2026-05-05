@@ -1,30 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Add Teacher{% endblock %}
-{% block page_title %}Add Teacher{% endblock %}
-
+{% block title %}Add Teacher{% endblock %}{% block page_title %}Add Teacher{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div><h1>Add Teacher</h1><div class="breadcrumb"><a href="{{ url_for('teachers') }}" style="color:var(--primary)">Teachers</a> / Add New</div></div>
+<div class="page-header"><div><h1>Add Teacher</h1><div class="breadcrumb"><a href="{{ url_for('teachers') }}">Teachers</a> / Add</div></div></div>
+<div class="card" style="max-width:900px;"><form method="POST"><div class="form-grid">
+<div class="form-group"><label>Employee ID *</label><input name="emp_id" required placeholder="EMP001"/></div>
+<div class="form-group"><label>Full Name *</label><input name="name" required/></div>
+<div class="form-group"><label>Email</label><input name="email" type="email"/></div>
+<div class="form-group"><label>Phone</label><input name="phone"/></div>
+<div class="form-group"><label>Subject *</label><input name="subject" required placeholder="e.g. Data Structures"/></div>
+<div class="form-group"><label>Department</label><select name="department"><option>Computer Science</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>English</option><option>Management</option><option>Yoga &amp; Humanities</option><option>Other</option></select></div>
+<div class="form-group"><label>Qualification</label><input name="qualification" placeholder="M.Tech, PhD…"/></div>
+<div class="form-group"><label>Experience (years)</label><input name="experience" type="number" min="0"/></div>
+<div class="form-group"><label>Salary (₹)</label><input name="salary" type="number"/></div>
+<div class="form-group"><label>Joining Date</label><input name="joining_date" type="date"/></div>
+<div class="form-group full"><label>Specialization</label><input name="specialization" placeholder="Area of expertise…"/></div>
 </div>
-<div class="card" style="max-width:900px;">
-  <form method="POST">
-    <div class="form-grid">
-      <div class="form-group"><label>Employee ID *</label><input name="emp_id" required placeholder="e.g. EMP001"/></div>
-      <div class="form-group"><label>Full Name *</label><input name="name" required placeholder="Teacher full name"/></div>
-      <div class="form-group"><label>Email</label><input name="email" type="email" placeholder="teacher@college.edu"/></div>
-      <div class="form-group"><label>Phone</label><input name="phone" placeholder="+91 XXXXXXXXXX"/></div>
-      <div class="form-group"><label>Subject</label><input name="subject" placeholder="e.g. Data Structures"/></div>
-      <div class="form-group"><label>Department</label>
-        <select name="department"><option>Computer Science</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>English</option><option>Management</option><option>Other</option></select></div>
-      <div class="form-group"><label>Qualification</label><input name="qualification" placeholder="e.g. M.Tech, PhD"/></div>
-      <div class="form-group"><label>Experience (years)</label><input name="experience" type="number" min="0" placeholder="Years of experience"/></div>
-      <div class="form-group"><label>Salary (₹)</label><input name="salary" type="number" placeholder="Monthly salary"/></div>
-      <div class="form-group"><label>Joining Date</label><input name="joining_date" type="date"/></div>
-    </div>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Teacher</button>
-      <a href="{{ url_for('teachers') }}" class="btn btn-secondary">Cancel</a>
-    </div>
-  </form>
-</div>
-{% endblock %}
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><a href="{{ url_for('teachers') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}

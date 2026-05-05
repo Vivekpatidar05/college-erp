@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Exam Schedule{% endblock %}{% block page_title %}Exam Schedule{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Exam Schedule</h1></div><a href="{{ url_for('add_exam') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Schedule Exam</a></div>
+{% if exams %}
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>#</th><th>Subject</th><th>Course</th><th>Semester</th><th>Exam Type</th><th>Date</th><th>Time</th><th>Room</th><th>Max Marks</th><th>Notes</th><th>Action</th></tr></thead><tbody>
+{% for e in exams %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td style="font-weight:700;">{{ e.subject }}</td>
+<td><span class="badge badge-purple">{{ e.get('course','—') }}</span></td>
+<td>{{ e.get('semester','—') }}</td>
+<td><span class="badge badge-info">{{ e.get('exam_type','—') }}</span></td>
+<td style="font-weight:600;color:var(--warning);">{{ e.exam_date }}</td>
+<td>{{ e.get('time_start','—') }} – {{ e.get('time_end','—') }}</td>
+<td><span class="badge badge-grey">{{ e.get('room','—') }}</span></td>
+<td>{{ e.get('max_marks','100') }}</td>
+<td style="font-size:12px;color:var(--text-muted);">{{ e.get('notes','—') }}</td>
+<td><a href="{{ url_for('delete_exam',id=e._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a></td>
+</tr>{% endfor %}</tbody></table></div></div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-file-alt"></i><p>No exams scheduled.</p></div></div>{% endif %}
+{% endblock %}

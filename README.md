@@ -1,32 +1,52 @@
-# EduCore — College ERP System
+# DSVV ERP System
+### Dev Sanskriti Vishwavidyalaya, Haridwar
 
-Flask · MongoDB Atlas · Role-Based Auth · Railway-Ready
+Full-featured College ERP with role-based auth, 15+ modules, analytics, and Render deployment.
 
 ---
 
 ## Quick Start (Local)
-
 ```bash
-cp .env.example .env        # fill in MONGO_URI and SECRET_KEY
+cp .env.example .env        # fill MONGO_URI + SECRET_KEY
 pip install -r requirements.txt
-python app.py               # runs on http://localhost:5000
+python app.py               # → http://localhost:5000
 ```
-
-Default login: **admin / admin123**
+**Default login:** `admin` / `admin123`
 
 ---
 
-## Deploy to Railway
+## Deploy to Render
+1. Push repo to GitHub
+2. Go to [render.com](https://render.com) → New Web Service → Connect GitHub repo
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120`
+5. Add env vars: `MONGO_URI`, `SECRET_KEY`, `DB_NAME=dsvv_erp`
+6. Deploy → open live URL
 
-1. Push this repo to GitHub
-2. Create new project on [railway.app](https://railway.app) → Deploy from GitHub
-3. Add environment variables in Railway → Variables:
-   - `MONGO_URI` = your MongoDB Atlas connection string
-   - `SECRET_KEY` = a long random secret
-   - `DB_NAME` = college_erp
-4. Go to Settings → Generate Domain → open your live URL
+See **DEPLOYMENT_GUIDE.html** for full visual walkthrough.
 
-See **DEPLOYMENT_GUIDE.html** for full step-by-step instructions.
+---
+
+## Modules (15+)
+
+| Module | Admin | Teacher | Student |
+|--------|-------|---------|---------|
+| Dashboard + Analytics | ✅ Charts, stats | ✅ Subject overview | ✅ Personal stats |
+| Students | ✅ Full CRUD + ID card | — | ✅ View own profile |
+| Teachers | ✅ Full CRUD | ✅ View profile | — |
+| Courses | ✅ Full CRUD | — | ✅ View enrolled |
+| Attendance | ✅ All + CSV export | ✅ Own subject only | ✅ View own |
+| Timetable | ✅ Manage slots | — | ✅ View own |
+| Assignments | ✅ View submissions | ✅ Post + view | ✅ Submit online |
+| Exam Schedule | ✅ Schedule | ✅ View | ✅ View own |
+| Results | ✅ Add + auto-grade | — | ✅ Marksheet + print |
+| Fees | ✅ CRUD + CSV | — | ✅ View own |
+| Notices | ✅ CRUD + targeting | ✅ View | ✅ View |
+| Events | ✅ Full CRUD | ✅ View | ✅ View |
+| Library | ✅ Full CRUD | — | — |
+| Hostel | ✅ Full CRUD | — | ✅ View own |
+| Grievances | ✅ Respond | — | ✅ Submit + track |
+| User Management | ✅ Full control | — | — |
 
 ---
 
@@ -34,61 +54,17 @@ See **DEPLOYMENT_GUIDE.html** for full step-by-step instructions.
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `MONGO_URI` | MongoDB Atlas connection string | ✅ Yes |
-| `SECRET_KEY` | Flask session secret | ✅ Yes |
-| `DB_NAME` | Database name (default: college_erp) | Optional |
-
----
-
-## Project Structure
-
-```
-college_erp/
-├── app.py                 ← Flask app (all routes + auth)
-├── Procfile               ← Railway/Gunicorn start command
-├── railway.json           ← Railway config
-├── runtime.txt            ← Python version
-├── requirements.txt       ← Dependencies
-├── .env.example           ← Environment variable template
-├── .gitignore
-├── DEPLOYMENT_GUIDE.html  ← Full deployment walkthrough
-├── static/
-│   ├── css/style.css
-│   └── js/main.js
-└── templates/
-    ├── auth/login.html
-    ├── base.html
-    ├── dashboard.html
-    ├── admin/             ← User management (3 files)
-    ├── student/           ← Student portal (6 files)
-    ├── teacher/           ← Teacher portal (3 files)
-    ├── students/          ← Admin CRUD (3 files)
-    ├── teachers/          ← Admin CRUD (3 files)
-    ├── courses/           ← Admin CRUD (3 files)
-    ├── attendance/        ← Admin CRUD (2 files)
-    ├── fees/              ← Admin CRUD (3 files)
-    ├── results/           ← Admin CRUD (3 files)
-    ├── notices/           ← Admin CRUD (3 files)
-    └── library/           ← Admin CRUD (3 files)
-```
-
----
-
-## Roles
-
-| Role | Access |
-|------|--------|
-| **Admin** | Full CRUD on all 8 modules + user management |
-| **Teacher** | Mark attendance for their subject only |
-| **Student** | Read-only: own profile, attendance, results, fees |
+| `MONGO_URI` | MongoDB Atlas connection string | ✅ |
+| `SECRET_KEY` | Flask session secret | ✅ |
+| `DB_NAME` | Database name (default: dsvv_erp) | Optional |
 
 ---
 
 ## Tech Stack
-
-- **Backend**: Python 3.11 + Flask 3
-- **Database**: MongoDB Atlas (via PyMongo)
-- **Auth**: Werkzeug password hashing + Flask sessions
-- **Server**: Gunicorn (production)
-- **Hosting**: Railway
-- **Frontend**: Jinja2 + vanilla CSS/JS (dark theme)
+- **Backend:** Python 3.11 + Flask 3
+- **Database:** MongoDB Atlas (PyMongo)
+- **Auth:** Werkzeug hashing + Flask sessions (3 roles)
+- **Server:** Gunicorn
+- **Hosting:** Render
+- **Frontend:** Jinja2 + custom CSS (dark theme) + Chart.js
+- **Export:** CSV via Python csv module

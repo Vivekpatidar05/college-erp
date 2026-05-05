@@ -1,40 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Attendance History{% endblock %}
-{% block page_title %}Attendance History{% endblock %}
-
+{% block title %}Attendance History{% endblock %}{% block page_title %}Attendance History{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div>
-    <h1>Attendance History</h1>
-    <div class="breadcrumb">Records for <strong style="color:var(--primary);">{{ subject }}</strong></div>
-  </div>
-  <a href="{{ url_for('teacher_mark_attendance') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Mark New</a>
-</div>
-
-<div class="card">
-  <div class="card-header">
-    <div><div class="card-title">All Records — {{ subject }}</div><div class="card-subtitle">{{ records|length }} record(s)</div></div>
-  </div>
-  {% if records %}
-  <div class="table-wrapper">
-    <table>
-      <thead><tr><th>#</th><th>Roll No</th><th>Student</th><th>Course</th><th>Date</th><th>Status</th></tr></thead>
-      <tbody>
-        {% for r in records %}
-        <tr>
-          <td style="color:var(--text-muted)">{{ loop.index }}</td>
-          <td><span class="badge badge-purple">{{ r.roll_no }}</span></td>
-          <td style="font-weight:500">{{ r.name }}</td>
-          <td>{{ r.get('course','—') }}</td>
-          <td>{{ r.date }}</td>
-          <td><span class="badge {% if r.status=='Present' %}badge-success{% elif r.status=='Absent' %}badge-danger{% else %}badge-warning{% endif %}">{{ r.status }}</span></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% else %}
-  <div class="empty-state"><i class="fas fa-calendar-check"></i><p>No records yet. <a href="{{ url_for('teacher_mark_attendance') }}" style="color:var(--primary);">Mark attendance now.</a></p></div>
-  {% endif %}
-</div>
-{% endblock %}
+<div class="page-header"><div><h1>Attendance History</h1><div class="breadcrumb">Subject: <strong style="color:var(--primary);">{{ subject }}</strong></div></div><a href="{{ url_for('teacher_mark_attendance') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Mark New</a></div>
+<div class="card"><div class="card-header"><div><div class="card-title">All Records — {{ subject }}</div><div class="card-subtitle">{{ records|length }} entries</div></div></div>
+{% if records %}<div class="table-wrapper"><table><thead><tr><th>#</th><th>Roll No</th><th>Student</th><th>Course</th><th>Date</th><th>Status</th></tr></thead><tbody>
+{% for r in records %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td><span class="badge badge-purple mono">{{ r.roll_no }}</span></td>
+<td style="font-weight:600;">{{ r.name }}</td>
+<td style="font-size:12px;">{{ r.get('course','—') }}</td>
+<td>{{ r.date }}</td>
+<td><span class="badge {% if r.status=='Present' %}badge-success{% elif r.status=='Absent' %}badge-danger{% else %}badge-warning{% endif %}">{{ r.status }}</span></td>
+</tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty-state"><i class="fas fa-calendar-check"></i><p>No records yet.</p></div>{% endif %}
+</div>{% endblock %}

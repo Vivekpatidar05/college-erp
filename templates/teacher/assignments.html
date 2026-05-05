@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}My Assignments{% endblock %}{% block page_title %}My Assignments{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Assignments — {{ teacher.get('subject','') }}</h1></div></div>
+<div class="card" style="max-width:860px;margin-bottom:24px;">
+<div class="card-header"><div><div class="card-title">Post New Assignment</div></div></div>
+<form method="POST"><div class="form-grid">
+<div class="form-group full"><label>Title *</label><input name="title" required placeholder="Assignment title"/></div>
+<div class="form-group"><label>Course *</label><select name="course" required><option value="">-- Select --</option>{% for c in courses %}<option>{{ c.name }}</option>{% endfor %}</select></div>
+<div class="form-group"><label>Semester</label><select name="semester">{% for i in range(1,9) %}<option>Semester {{ i }}</option>{% endfor %}</select></div>
+<div class="form-group"><label>Due Date *</label><input name="due_date" type="date" required/></div>
+<div class="form-group"><label>Max Marks</label><input name="max_marks" type="number" value="100"/></div>
+<div class="form-group full"><label>Description / Instructions *</label><textarea name="description" required style="min-height:100px;" placeholder="Describe the assignment…"></textarea></div>
+</div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post Assignment</button></div>
+</form></div>
+<div class="card-title" style="margin-bottom:14px;">Posted Assignments</div>
+{% if assignments %}
+<div style="display:grid;gap:12px;">{% for a in assignments %}
+<div class="card" style="padding:16px 20px;">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+<div style="flex:1;">
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;">{{ a.title }}</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;"><span class="badge badge-purple">{{ a.get('course','') }}</span><span class="badge badge-grey">{{ a.get('semester','') }}</span></div>
+<div style="font-size:13px;color:var(--text-muted);">{{ a.description }}</div>
+<div style="font-size:12px;color:var(--text-dim);margin-top:6px;">Posted {{ a.posted_on }} · Due <strong style="color:var(--warning);">{{ a.due_date }}</strong></div>
+</div>
+<a href="{{ url_for('view_assignment',id=a._id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> Submissions</a>
+</div></div>
+{% endfor %}</div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-tasks"></i><p>No assignments posted yet.</p></div></div>{% endif %}
+{% endblock %}

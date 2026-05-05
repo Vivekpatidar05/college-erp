@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Respond to Grievance{% endblock %}{% block page_title %}Respond to Grievance{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Respond to Grievance</h1><div class="breadcrumb"><a href="{{ url_for('grievances') }}">Grievances</a> / Respond</div></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;flex-wrap:wrap;">
+<div class="card">
+<div class="card-title" style="margin-bottom:16px;">Grievance Details</div>
+<div style="display:grid;gap:10px;font-size:13.5px;">
+{% for lbl,val in [('Student',grievance.student_name),('Roll No',grievance.roll_no),('Course',grievance.get('course','—')),('Category',grievance.category),('Submitted',grievance.submitted_on)] %}
+<div style="display:flex;gap:12px;padding:10px;background:var(--surface2);border-radius:8px;">
+<span style="color:var(--text-muted);font-weight:600;width:100px;flex-shrink:0;">{{ lbl }}</span>
+<span style="font-weight:600;">{{ val }}</span>
+</div>{% endfor %}
+</div>
+<div style="margin-top:14px;padding:14px;background:var(--surface2);border-radius:10px;">
+<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Complaint</div>
+<div style="font-size:13.5px;line-height:1.7;">{{ grievance.description }}</div>
+</div>
+</div>
+<div class="card">
+<div class="card-title" style="margin-bottom:16px;">Write Response</div>
+<form method="POST">
+<div class="form-group" style="margin-bottom:16px;"><label>Response / Resolution</label><textarea name="response" style="min-height:140px;" required placeholder="Write your response…">{{ grievance.get('response','') }}</textarea></div>
+<div class="form-group" style="margin-bottom:20px;"><label>Update Status</label>
+<select name="status"><option {% if grievance.status=='Open' %}selected{% endif %}>Open</option><option {% if grievance.status=='In Progress' %}selected{% endif %}>In Progress</option><option {% if grievance.status=='Resolved' %}selected{% endif %}>Resolved</option></select></div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Response</button><a href="{{ url_for('grievances') }}" class="btn btn-secondary">Back</a></div>
+</form>
+</div>
+</div>{% endblock %}

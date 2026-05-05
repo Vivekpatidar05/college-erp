@@ -1,56 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Students{% endblock %}
-{% block page_title %}Students{% endblock %}
-
+{% block title %}Students{% endblock %}{% block page_title %}Students{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div><h1>Students</h1><div class="breadcrumb">Manage all student records</div></div>
-  <a href="{{ url_for('add_student') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Student</a>
-</div>
-
-<div class="search-bar">
-  <form method="GET" style="display:flex;gap:10px;width:100%;">
-    <div class="search-input-wrap">
-      <i class="fas fa-search"></i>
-      <input class="search-input" name="q" value="{{ q }}" placeholder="Search by name or roll no…"/>
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-    {% if q %}<a href="{{ url_for('students') }}" class="btn btn-secondary">Clear</a>{% endif %}
-  </form>
-</div>
-
-<div class="card">
-  <div class="card-header">
-    <div><div class="card-title">All Students</div><div class="card-subtitle">{{ students|length }} record(s) found</div></div>
-  </div>
-  {% if students %}
-  <div class="table-wrapper">
-    <table>
-      <thead><tr><th>#</th><th>Roll No</th><th>Name</th><th>Course</th><th>Year</th><th>Gender</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead>
-      <tbody>
-        {% for s in students %}
-        <tr>
-          <td style="color:var(--text-muted)">{{ loop.index }}</td>
-          <td><span class="badge badge-purple">{{ s.roll_no }}</span></td>
-          <td style="font-weight:500">{{ s.name }}</td>
-          <td>{{ s.get('course','—') }}</td>
-          <td>{{ s.get('year','—') }}</td>
-          <td><span class="badge {% if s.gender=='Female' %}badge-info{% else %}badge-grey{% endif %}">{{ s.get('gender','—') }}</span></td>
-          <td>{{ s.get('phone','—') }}</td>
-          <td style="color:var(--text-muted);font-size:13px;">{{ s.get('email','—') }}</td>
-          <td>
-            <div class="actions-cell">
-              <a href="{{ url_for('edit_student', id=s._id) }}" class="btn btn-warning btn-icon btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-              <a href="{{ url_for('delete_student', id=s._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% else %}
-  <div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students found. <a href="{{ url_for('add_student') }}" style="color:var(--primary)">Add your first student.</a></p></div>
-  {% endif %}
-</div>
-{% endblock %}
+<div class="page-header"><div><h1>Students</h1><div class="breadcrumb">Manage all student records</div></div>
+<div style="display:flex;gap:10px;"><a href="{{ url_for('export_attendance') }}" class="btn btn-secondary btn-sm"><i class="fas fa-download"></i> Export Att.</a><a href="{{ url_for('add_student') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Student</a></div></div>
+<div class="search-bar"><form method="GET" style="display:flex;gap:10px;width:100%;"><div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" name="q" value="{{ q }}" placeholder="Search name or roll no…"/></div><button type="submit" class="btn btn-primary">Search</button>{% if q %}<a href="{{ url_for('students') }}" class="btn btn-secondary">Clear</a>{% endif %}</form></div>
+<div class="card"><div class="card-header"><div><div class="card-title">All Students</div><div class="card-subtitle">{{ students|length }} record(s)</div></div></div>
+{% if students %}<div class="table-wrapper"><table><thead><tr><th>#</th><th>Roll No</th><th>Name</th><th>Course</th><th>Sem</th><th>Gender</th><th>Category</th><th>Blood</th><th>Phone</th><th>Actions</th></tr></thead><tbody>
+{% for s in students %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td><span class="badge badge-purple mono">{{ s.roll_no }}</span></td>
+<td style="font-weight:600;">{{ s.name }}</td>
+<td>{{ s.get('course','—') }}</td>
+<td>{{ s.get('semester','—') }}</td>
+<td><span class="badge {% if s.gender=='Female' %}badge-info{% else %}badge-grey{% endif %}">{{ s.get('gender','—') }}</span></td>
+<td style="font-size:12px;color:var(--text-muted);">{{ s.get('category','—') }}</td>
+<td><span class="badge badge-danger" style="font-size:10px;">{{ s.get('blood_group','—') }}</span></td>
+<td style="font-size:12px;color:var(--text-muted);">{{ s.get('phone','—') }}</td>
+<td><div class="actions-cell">
+<a href="{{ url_for('student_id_card',id=s._id) }}" class="btn btn-teal btn-icon btn-sm" title="ID Card"><i class="fas fa-id-card"></i></a>
+<a href="{{ url_for('edit_student',id=s._id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></a>
+<a href="{{ url_for('delete_student',id=s._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
+</div></td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students found.</p></div>{% endif %}
+</div>{% endblock %}

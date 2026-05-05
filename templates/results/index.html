@@ -1,63 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Results{% endblock %}
-{% block page_title %}Results{% endblock %}
-
+{% block title %}Results{% endblock %}{% block page_title %}Exam Results{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div><h1>Exam Results</h1><div class="breadcrumb">Manage student academic results</div></div>
-  <a href="{{ url_for('add_result') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Result</a>
-</div>
-
-<div class="search-bar">
-  <form method="GET" style="display:flex;gap:10px;width:100%;">
-    <div class="search-input-wrap"><i class="fas fa-search"></i>
-      <input class="search-input" name="q" value="{{ q }}" placeholder="Search by student name or roll no…"/>
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-    {% if q %}<a href="{{ url_for('results') }}" class="btn btn-secondary">Clear</a>{% endif %}
-  </form>
-</div>
-
-<div class="card">
-  <div class="card-header">
-    <div><div class="card-title">All Results</div><div class="card-subtitle">{{ results|length }} record(s)</div></div>
-  </div>
-  {% if results %}
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr><th>#</th><th>Roll No</th><th>Student</th><th>Course</th><th>Semester</th><th>Exam Type</th><th>Total</th><th>Percentage</th><th>Grade</th><th>Result</th><th>Actions</th></tr>
-      </thead>
-      <tbody>
-        {% for r in results %}
-        <tr>
-          <td style="color:var(--text-muted)">{{ loop.index }}</td>
-          <td><span class="badge badge-purple">{{ r.roll_no }}</span></td>
-          <td style="font-weight:500">{{ r.student_name }}</td>
-          <td>{{ r.get('course','—') }}</td>
-          <td>{{ r.get('semester','—') }}</td>
-          <td>{{ r.get('exam_type','—') }}</td>
-          <td>{{ r.get('total','0') }} / {{ r.get('total_max','0') }}</td>
-          <td style="font-weight:600">{{ r.get('percentage','0') }}%</td>
-          <td>
-            <span class="badge {% if r.grade in ['A+','A'] %}badge-success{% elif r.grade=='B' %}badge-info{% elif r.grade=='C' %}badge-warning{% elif r.grade=='D' %}badge-grey{% else %}badge-danger{% endif %}">
-              {{ r.grade }}
-            </span>
-          </td>
-          <td><span class="badge {% if r.result=='Pass' %}badge-success{% else %}badge-danger{% endif %}">{{ r.result }}</span></td>
-          <td>
-            <div class="actions-cell">
-              <a href="{{ url_for('view_result', id=r._id) }}" class="btn btn-info btn-icon btn-sm" title="View"><i class="fas fa-eye"></i></a>
-              <a href="{{ url_for('delete_result', id=r._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% else %}
-  <div class="empty-state"><i class="fas fa-trophy"></i><p>No results found. <a href="{{ url_for('add_result') }}" style="color:var(--primary)">Add the first result.</a></p></div>
-  {% endif %}
-</div>
-{% endblock %}
+<div class="page-header"><div><h1>Exam Results</h1></div><a href="{{ url_for('add_result') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Result</a></div>
+<div class="search-bar"><form method="GET" style="display:flex;gap:10px;width:100%;"><div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" name="q" value="{{ q }}" placeholder="Name or roll no…"/></div><button type="submit" class="btn btn-primary">Search</button>{% if q %}<a href="{{ url_for('results') }}" class="btn btn-secondary">Clear</a>{% endif %}</form></div>
+<div class="card"><div class="card-header"><div><div class="card-title">All Results</div><div class="card-subtitle">{{ results|length }} records</div></div></div>
+{% if results %}<div class="table-wrapper"><table><thead><tr><th>#</th><th>Roll No</th><th>Student</th><th>Course</th><th>Sem</th><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th><th>Result</th><th>Actions</th></tr></thead><tbody>
+{% for r in results %}<tr>
+<td style="color:var(--text-muted)">{{ loop.index }}</td>
+<td><span class="badge badge-purple mono">{{ r.roll_no }}</span></td>
+<td style="font-weight:600;">{{ r.student_name }}</td>
+<td style="font-size:12px;">{{ r.get('course','—') }}</td>
+<td>{{ r.get('semester','—') }}</td>
+<td><span class="badge badge-info">{{ r.get('exam_type','—') }}</span></td>
+<td>{{ r.get('total','0') }}/{{ r.get('total_max','0') }}</td>
+<td style="font-weight:700;">{{ r.get('percentage','0') }}%</td>
+<td><span class="badge {% if r.grade in ['O','A+','A'] %}badge-success{% elif r.grade in ['B+','B'] %}badge-info{% elif r.grade=='C' %}badge-warning{% else %}badge-danger{% endif %}">{{ r.grade }}</span></td>
+<td><span class="badge {% if r.result=='Pass' %}badge-success{% else %}badge-danger{% endif %}">{{ r.result }}</span></td>
+<td><div class="actions-cell"><a href="{{ url_for('view_result',id=r._id) }}" class="btn btn-info btn-icon btn-sm"><i class="fas fa-eye"></i></a><a href="{{ url_for('delete_result',id=r._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a></div></td>
+</tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty-state"><i class="fas fa-trophy"></i><p>No results yet.</p></div>{% endif %}
+</div>{% endblock %}

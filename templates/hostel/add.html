@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Add Hostel Record{% endblock %}{% block page_title %}Add Hostel Record{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Add Hostel Record</h1><div class="breadcrumb"><a href="{{ url_for('hostel') }}">Hostel</a> / Add</div></div></div>
+<div class="card" style="max-width:860px;"><form method="POST"><div class="form-grid">
+<div class="form-group"><label>Roll Number *</label><input name="roll_no" class="roll-lookup" required placeholder="Auto-fills name"/></div>
+<div class="form-group"><label>Student Name</label><input name="student_name" class="s-name" placeholder="Auto-filled"/></div>
+<div class="form-group"><label>Hostel Name</label><input name="hostel_name" placeholder="Boys Hostel / Girls Hostel…"/></div>
+<div class="form-group"><label>Room Number</label><input name="room_no" placeholder="101, 202…"/></div>
+<div class="form-group"><label>Room Type</label><select name="room_type"><option>Single</option><option>Double</option><option>Triple</option><option>Dormitory</option></select></div>
+<div class="form-group"><label>Joining Date</label><input name="joining_date" type="date"/></div>
+<div class="form-group"><label>Fee per Month (₹)</label><input name="fees_per_month" type="number"/></div>
+<div class="form-group"><label>Status</label><select name="status"><option>Active</option><option>Vacated</option></select></div>
+<div class="form-group full"><label>Remarks</label><textarea name="remarks"></textarea></div>
+</div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><a href="{{ url_for('hostel') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}

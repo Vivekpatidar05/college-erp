@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Edit Event{% endblock %}{% block page_title %}Edit Event{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Edit Event</h1><div class="breadcrumb"><a href="{{ url_for('events') }}">Events</a> / Edit</div></div></div>
+<div class="card" style="max-width:860px;"><form method="POST"><div class="form-grid">
+<div class="form-group full"><label>Title</label><input name="title" value="{{ event.title }}" required/></div>
+<div class="form-group"><label>Category</label><select name="category">{% for cat in ['Academic','Cultural','Sports','Workshop','Seminar','Holiday','Other'] %}<option {% if event.get('category')==cat %}selected{% endif %}>{{ cat }}</option>{% endfor %}</select></div>
+<div class="form-group"><label>Date</label><input name="date" type="date" value="{{ event.date }}"/></div>
+<div class="form-group"><label>Time</label><input name="time" type="time" value="{{ event.get('time','') }}"/></div>
+<div class="form-group"><label>Venue</label><input name="venue" value="{{ event.get('venue','') }}"/></div>
+<div class="form-group"><label>Organizer</label><input name="organizer" value="{{ event.get('organizer','') }}"/></div>
+<div class="form-group"><label>Target</label><select name="target">{% for t in ['All','Students','Teachers','Admin'] %}<option {% if event.get('target')==t %}selected{% endif %}>{{ t }}</option>{% endfor %}</select></div>
+<div class="form-group full"><label>Description</label><textarea name="description">{{ event.get('description','') }}</textarea></div>
+</div>
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button><a href="{{ url_for('events') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}

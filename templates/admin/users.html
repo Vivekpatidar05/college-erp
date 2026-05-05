@@ -1,91 +1,45 @@
 {% extends "base.html" %}
 {% block title %}User Management{% endblock %}
 {% block page_title %}User Management{% endblock %}
-
 {% block content %}
 <div class="page-header">
-  <div>
-    <h1>User Management</h1>
-    <div class="breadcrumb">Control who can access the system and at what level</div>
-  </div>
+  <div><h1>User Management</h1><div class="breadcrumb">Control system access and roles</div></div>
   <a href="{{ url_for('admin_add_user') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add User</a>
 </div>
-
-<!-- Role summary pills -->
-{% set admins   = users | selectattr('role','eq','admin')   | list %}
-{% set tchrs    = users | selectattr('role','eq','teacher')  | list %}
-{% set stdnts   = users | selectattr('role','eq','student')  | list %}
-<div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-  <div class="stat-card" style="min-width:160px;flex:1;">
-    <div class="stat-icon purple"><i class="fas fa-user-shield"></i></div>
-    <div><div class="stat-value">{{ admins|length }}</div><div class="stat-label">Admins</div></div>
-  </div>
-  <div class="stat-card" style="min-width:160px;flex:1;">
-    <div class="stat-icon" style="background:rgba(0,212,180,0.12);color:#00d4b4;"><i class="fas fa-chalkboard-teacher"></i></div>
-    <div><div class="stat-value">{{ tchrs|length }}</div><div class="stat-label">Teachers</div></div>
-  </div>
-  <div class="stat-card" style="min-width:160px;flex:1;">
-    <div class="stat-icon orange"><i class="fas fa-user-graduate"></i></div>
-    <div><div class="stat-value">{{ stdnts|length }}</div><div class="stat-label">Students</div></div>
-  </div>
-  <div class="stat-card" style="min-width:160px;flex:1;">
-    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
-    <div><div class="stat-value">{{ users | selectattr('active') | list | length }}</div><div class="stat-label">Active</div></div>
-  </div>
+<div class="stats-grid" style="margin-bottom:22px;">
+  {% set admins=users|selectattr('role','eq','admin')|list %}
+  {% set tchrs=users|selectattr('role','eq','teacher')|list %}
+  {% set stdnts=users|selectattr('role','eq','student')|list %}
+  <div class="stat-card"><div class="stat-icon si-purple"><i class="fas fa-user-shield"></i></div><div><div class="stat-value">{{ admins|length }}</div><div class="stat-label">Admins</div></div></div>
+  <div class="stat-card"><div class="stat-icon si-teal"><i class="fas fa-chalkboard-teacher"></i></div><div><div class="stat-value">{{ tchrs|length }}</div><div class="stat-label">Teachers</div></div></div>
+  <div class="stat-card"><div class="stat-icon si-amber"><i class="fas fa-user-graduate"></i></div><div><div class="stat-value">{{ stdnts|length }}</div><div class="stat-label">Students</div></div></div>
+  <div class="stat-card"><div class="stat-icon si-green"><i class="fas fa-check-circle"></i></div><div><div class="stat-value">{{ users|selectattr('active')|list|length }}</div><div class="stat-label">Active</div></div></div>
 </div>
-
 <div class="card">
-  <div class="card-header">
-    <div><div class="card-title">All Users</div><div class="card-subtitle">{{ users|length }} account(s) — manage access and roles</div></div>
-  </div>
+  <div class="card-header"><div><div class="card-title">All Users</div><div class="card-subtitle">{{ users|length }} accounts</div></div></div>
   {% if users %}
   <div class="table-wrapper">
     <table>
-      <thead>
-        <tr><th>#</th><th>Username</th><th>Full Name</th><th>Role</th><th>Linked Record</th><th>Status</th><th>Created</th><th>Actions</th></tr>
-      </thead>
+      <thead><tr><th>#</th><th>User</th><th>Name</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
       <tbody>
         {% for u in users %}
         <tr>
-          <td style="color:var(--text-muted);">{{ loop.index }}</td>
+          <td style="color:var(--text-muted)">{{ loop.index }}</td>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
-              <div style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;
-                {% if u.role=='admin' %}background:rgba(108,99,255,0.2);color:#a08fff;
-                {% elif u.role=='teacher' %}background:rgba(0,212,180,0.15);color:#00d4b4;
-                {% else %}background:rgba(245,166,35,0.15);color:#f5a623;{% endif %}">
-                {{ u.username[0] | upper }}
-              </div>
-              <span style="font-weight:600;">{{ u.username }}</span>
+              <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:{% if u.role=='admin' %}linear-gradient(135deg,#7c6bff,#a78bfa){% elif u.role=='teacher' %}linear-gradient(135deg,#0d9488,#14b8a6){% else %}linear-gradient(135deg,#d97706,#f59e0b){% endif %};">{{ u.username[0]|upper }}</div>
+              <span class="mono" style="font-weight:600;">{{ u.username }}</span>
             </div>
           </td>
           <td>{{ u.name }}</td>
-          <td>
-            <span class="badge {% if u.role=='admin' %}badge-purple{% elif u.role=='teacher' %}badge-info{% else %}badge-warning{% endif %}">
-              <i class="fas {% if u.role=='admin' %}fa-user-shield{% elif u.role=='teacher' %}fa-chalkboard-teacher{% else %}fa-user-graduate{% endif %}" style="margin-right:4px;font-size:10px;"></i>
-              {{ u.role | capitalize }}
-            </span>
-          </td>
-          <td style="font-size:12.5px;color:var(--text-muted);">
-            {% if u.linked_id %}
-              <span class="badge badge-grey"><i class="fas fa-link" style="margin-right:4px;"></i>Linked</span>
-            {% else %}
-              <span style="color:var(--text-muted);">—</span>
-            {% endif %}
-          </td>
-          <td>
-            <span class="badge {% if u.get('active',True) %}badge-success{% else %}badge-danger{% endif %}">
-              {% if u.get('active',True) %}Active{% else %}Inactive{% endif %}
-            </span>
-          </td>
+          <td><span class="badge {% if u.role=='admin' %}badge-purple{% elif u.role=='teacher' %}badge-teal{% else %}badge-warning{% endif %}">{{ u.role }}</span></td>
+          <td><span class="badge {% if u.get('active',True) %}badge-success{% else %}badge-danger{% endif %}">{% if u.get('active',True) %}Active{% else %}Inactive{% endif %}</span></td>
           <td style="font-size:12px;color:var(--text-muted);">{{ u.get('created_at','—') }}</td>
           <td>
             <div class="actions-cell">
-              <a href="{{ url_for('admin_edit_user', id=u._id) }}" class="btn btn-warning btn-icon btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-              <a href="{{ url_for('admin_toggle_user', id=u._id) }}" class="btn btn-sm {% if u.get('active',True) %}btn-secondary{% else %}btn-success{% endif %}" title="Toggle" style="padding:6px 10px;">
-                <i class="fas {% if u.get('active',True) %}fa-ban{% else %}fa-check{% endif %}"></i>
-              </a>
-              <a href="{{ url_for('admin_delete_user', id=u._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
+              <a href="{{ url_for('admin_edit_user',id=u._id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></a>
+              <a href="{{ url_for('admin_toggle_user',id=u._id) }}" class="btn btn-sm {% if u.get('active',True) %}btn-secondary{% else %}btn-success{% endif %}" style="padding:6px 10px;"><i class="fas {% if u.get('active',True) %}fa-ban{% else %}fa-check{% endif %}"></i></a>
+              <a href="{{ url_for('admin_delete_user',id=u._id) }}" class="btn btn-danger btn-icon btn-sm delete-btn"><i class="fas fa-trash"></i></a>
             </div>
           </td>
         </tr>
@@ -93,16 +47,6 @@
       </tbody>
     </table>
   </div>
-  {% else %}
-  <div class="empty-state"><i class="fas fa-users-cog"></i><p>No users found.</p></div>
-  {% endif %}
-</div>
-
-<!-- Info box -->
-<div style="margin-top:20px;background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.18);border-radius:12px;padding:18px 22px;font-size:13px;color:var(--text-muted);line-height:1.7;">
-  <strong style="color:var(--primary);"><i class="fas fa-info-circle"></i> Access Levels</strong><br/>
-  <span style="color:#a08fff;">Admin</span> — Full system access. Manage all modules, users, and records.<br/>
-  <span style="color:#00d4b4;">Teacher</span> — Can only mark attendance for their assigned subject. Must be linked to a teacher record.<br/>
-  <span style="color:#f5a623;">Student</span> — Read-only access to their own profile, attendance, results and fees. Must be linked to a student record.
+  {% else %}<div class="empty-state"><i class="fas fa-users"></i><p>No users found.</p></div>{% endif %}
 </div>
 {% endblock %}

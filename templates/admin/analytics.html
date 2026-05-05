@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+{% block extra_head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Analytics &amp; Reports</h1><div class="breadcrumb">Institution-wide data insights</div></div></div>
+
+<!-- Summary numbers -->
+<div class="stats-grid" style="margin-bottom:28px;">
+  <div class="stat-card"><div class="stat-icon si-green"><i class="fas fa-rupee-sign"></i></div><div><div class="stat-value" style="font-size:20px;">₹{{ "{:,}".format(total_fee_collected) }}</div><div class="stat-label">Fees Collected</div></div></div>
+  <div class="stat-card"><div class="stat-icon si-red"><i class="fas fa-exclamation-circle"></i></div><div><div class="stat-value" style="font-size:20px;">₹{{ "{:,}".format(total_fee_pending) }}</div><div class="stat-label">Fees Pending</div></div></div>
+</div>
+
+<div class="charts-grid">
+  <!-- Enrollment by course -->
+  <div class="chart-card">
+    <div class="card-title" style="margin-bottom:16px;"><i class="fas fa-book-open" style="color:var(--primary);margin-right:8px;"></i>Enrolment by Course</div>
+    <div style="height:220px;"><canvas id="enrollChart"></canvas></div>
+  </div>
+  <!-- Gender distribution -->
+  <div class="chart-card">
+    <div class="card-title" style="margin-bottom:16px;"><i class="fas fa-venus-mars" style="color:var(--info);margin-right:8px;"></i>Gender Distribution</div>
+    <div style="height:220px;"><canvas id="genderChart"></canvas></div>
+  </div>
+  <!-- Grade distribution -->
+  <div class="chart-card">
+    <div class="card-title" style="margin-bottom:16px;"><i class="fas fa-trophy" style="color:var(--accent);margin-right:8px;"></i>Grade Distribution</div>
+    <div style="height:220px;"><canvas id="gradeChart"></canvas></div>
+  </div>
+  <!-- Library by category -->
+  <div class="chart-card">
+    <div class="card-title" style="margin-bottom:16px;"><i class="fas fa-book" style="color:var(--teal);margin-right:8px;"></i>Library by Category</div>
+    <div style="height:220px;"><canvas id="libChart"></canvas></div>
+  </div>
+  <!-- Attendance by subject -->
+  <div class="chart-card" style="grid-column:1/-1;">
+    <div class="card-title" style="margin-bottom:16px;"><i class="fas fa-calendar-check" style="color:var(--success);margin-right:8px;"></i>Attendance % by Subject</div>
+    <div style="height:250px;"><canvas id="attChart"></canvas></div>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+const COLORS = ['#7c6bff','#10d98a','#f59e0b','#f24f63','#38bdf8','#14b8a6','#fb923c','#ec4899','#a78bfa','#34d399'];
+
+// Enrolment
+const enroll = {{ enroll | tojson }};
+mkChart('enrollChart','doughnut',
+  enroll.map(e=>e._id||'Unknown'), enroll.map(e=>e.count), COLORS);
+
+// Gender
+const gender = {{ gender | tojson }};
+mkChart('genderChart','pie',
+  gender.map(g=>g._id||'Unknown'), gender.map(g=>g.count),
+  ['#7c6bff','#ec4899','#14b8a6']);
+
+// Grades
+const grades = {{ grades | tojson }};
+const gradeOrder = ['O','A+','A','B+','B','C','D','F'];
+const sortedG = gradeOrder.map(g=>grades.find(x=>x._id===g)||{_id:g,count:0});
+mkChart('gradeChart','bar',
+  sortedG.map(g=>g._id), sortedG.map(g=>g.count), COLORS);
+
+// Library
+const lib = {{ lib_cat | tojson }};
+mkChart('libChart','doughnut',
+  lib.map(l=>l._id||'Other'), lib.map(l=>l.count), COLORS);
+
+// Attendance
+const att = {{ att_data | tojson }};
+const attPct = att.map(a=>a.total ? Math.round(a.present/a.total*100) : 0);
+mkChart('attChart','bar',
+  att.map(a=>a._id||'Unknown'), attPct,
+  attPct.map(p=>p>=75?'rgba(16,217,138,0.7)':p>=50?'rgba(245,158,11,0.7)':'rgba(242,79,99,0.7)'));
+</script>
+{% endblock %}

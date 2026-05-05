@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Assignments{% endblock %}{% block page_title %}Assignments{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Assignments</h1><div class="breadcrumb">{{ student.get('course','') }}</div></div></div>
+{% if assignments %}
+<div style="display:grid;gap:14px;">{% for a in assignments %}
+<div class="card" style="padding:20px 24px;">
+<div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+<div style="width:48px;height:48px;border-radius:12px;background:rgba(56,189,248,.12);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--info);flex-shrink:0;"><i class="fas fa-tasks"></i></div>
+<div style="flex:1;">
+<div style="font-size:16px;font-weight:700;margin-bottom:4px;">{{ a.title }}</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;"><span class="badge badge-teal">{{ a.subject }}</span><span class="badge badge-grey">{{ a.get('semester','') }}</span></div>
+<div style="font-size:13.5px;color:var(--text-muted);margin-bottom:8px;">{{ a.description }}</div>
+<div style="font-size:12px;color:var(--text-dim);">By {{ a.teacher }} · Due <strong style="color:var(--warning);">{{ a.due_date }}</strong> · Max Marks: {{ a.get('max_marks','100') }}</div>
+</div>
+{% set aid = a._id|string %}
+{% if aid in submitted_ids %}
+<span class="badge badge-success" style="font-size:13px;padding:6px 14px;"><i class="fas fa-check-circle" style="margin-right:5px;"></i>Submitted</span>
+{% else %}
+<div>
+<button onclick="document.getElementById('form-{{ aid }}').style.display='block';this.style.display='none';" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> Submit</button>
+<div id="form-{{ aid }}" style="display:none;margin-top:12px;">
+<form method="POST" action="{{ url_for('submit_assignment',asgn_id=aid) }}">
+<textarea name="answer" required style="width:100%;min-height:100px;margin-bottom:10px;" placeholder="Write your answer or paste your submission…"></textarea>
+<button type="submit" class="btn btn-success btn-sm"><i class="fas fa-paper-plane"></i> Submit Assignment</button>
+</form></div></div>{% endif %}
+</div></div>{% endfor %}</div>
+{% else %}<div class="card"><div class="empty-state"><i class="fas fa-tasks"></i><p>No assignments posted for your course yet.</p></div></div>{% endif %}
+{% endblock %}

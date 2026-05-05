@@ -1,59 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Add Book{% endblock %}
-{% block page_title %}Add Book{% endblock %}
-
+{% block title %}Add Book{% endblock %}{% block page_title %}Add Book{% endblock %}
 {% block content %}
-<div class="page-header">
-  <div><h1>Add Book</h1><div class="breadcrumb"><a href="{{ url_for('library') }}" style="color:var(--primary)">Library</a> / Add</div></div>
+<div class="page-header"><div><h1>Add Book</h1><div class="breadcrumb"><a href="{{ url_for('library') }}">Library</a> / Add</div></div></div>
+<div class="card" style="max-width:860px;"><form method="POST"><div class="form-grid">
+<div class="form-group"><label>ISBN</label><input name="isbn" placeholder="978-0-xxx…"/></div>
+<div class="form-group"><label>Title *</label><input name="title" required/></div>
+<div class="form-group"><label>Author *</label><input name="author" required/></div>
+<div class="form-group"><label>Publisher</label><input name="publisher"/></div>
+<div class="form-group"><label>Category</label><select name="category"><option>Computer Science</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Literature</option><option>History</option><option>Management</option><option>Engineering</option><option>Yoga &amp; Spirituality</option><option>Reference</option><option>Other</option></select></div>
+<div class="form-group"><label>Edition</label><input name="edition" placeholder="1st, 2nd…"/></div>
+<div class="form-group"><label>Year Published</label><input name="year_pub" type="number" placeholder="2024"/></div>
+<div class="form-group"><label>Number of Copies</label><input name="copies" type="number" min="1" value="1"/></div>
+<div class="form-group"><label>Rack / Shelf No.</label><input name="rack_no" placeholder="A-12"/></div>
 </div>
-<div class="card" style="max-width:860px;">
-  <form method="POST">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>ISBN</label>
-        <input name="isbn" placeholder="e.g. 978-0-13-468599-1"/>
-      </div>
-      <div class="form-group">
-        <label>Book Title *</label>
-        <input name="title" required placeholder="Full book title"/>
-      </div>
-      <div class="form-group">
-        <label>Author *</label>
-        <input name="author" required placeholder="Author name(s)"/>
-      </div>
-      <div class="form-group">
-        <label>Publisher</label>
-        <input name="publisher" placeholder="Publishing house"/>
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <select name="category">
-          <option>Computer Science</option>
-          <option>Mathematics</option>
-          <option>Physics</option>
-          <option>Chemistry</option>
-          <option>Biology</option>
-          <option>Literature</option>
-          <option>History</option>
-          <option>Management</option>
-          <option>Engineering</option>
-          <option>Reference</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Number of Copies</label>
-        <input name="copies" type="number" min="1" value="1" placeholder="Total copies"/>
-      </div>
-      <div class="form-group">
-        <label>Rack / Shelf No.</label>
-        <input name="rack_no" placeholder="e.g. A-12, CS-3"/>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Add to Library</button>
-      <a href="{{ url_for('library') }}" class="btn btn-secondary">Cancel</a>
-    </div>
-  </form>
-</div>
-{% endblock %}
+<div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Add Book</button><a href="{{ url_for('library') }}" class="btn btn-secondary">Cancel</a></div>
+</form></div>{% endblock %}
